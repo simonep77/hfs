@@ -1,0 +1,11 @@
+﻿
+
+# SFTP CON CHIAVE PRIVATA
+
+Nel VFS, parametro SFTP_KEYBASE64 va inserita una chiave privata in formato OpenSSH (non nuovo formato) convertita in base 64. 
+Per info la chiave deve iniziare con:
+-----BEGIN RSA PRIVATE KEY-----
+
+la chiave può essere generata con PuttyGen e convertita in base 64 con qualsiasi tool online.
+
+Attenzione: in caso di utilizzo della chiave privata il parametro SFTP_PASS è la chiave per la lettura della KEY e non viene passata come password dell'utente

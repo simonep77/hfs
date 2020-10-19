@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<paths>
+
+
+
+		<path virtual="/locale1" physical="C:\WORK\DatiFileServices\locale1" >
+			<auth>
+				<user name="user1" access="LRDW" />
+			</auth>
+		</path>
+
+		<path virtual="/locale2" physical="C:\WORK\DatiFileServices\locale2" >
+			<auth>
+				<user name="user2" access="LRDW" />
+			</auth>
+		</path>
+
+
+		<!-- Percorso di rete accessibile senza autenticazione attraverso l'utente 
+			 che sta eseguendo il sito hfs (utente di dominio)
+		-->
+		<path virtual="/network1" physical="\\SERVER1\SHARE1" >
+			<auth>
+				<user name="user2" access="LRDW" />
+			</auth>
+		</path>
+
+		<!-- Percorso di rete accessibile con autenticazione esplicita.
+			Utile quando il server di destinazione non e' nel dominio dell'hfs e servono credenziali specifiche (utente anche nella forma computer\user)
+		-->
+		<path virtual="/network2" physical="\\10.1.10.30\INVIO" >
+			<params>
+				<param key="SMB_USER" value="rrrrrrrr" />
+				<param key="SMB_PASS" value="*********" />
+			</params>
+			<auth>
+				<user name="user2" access="LRDW" />
+			</auth>
+		</path>
+
+
+		<path virtual="/prova_sftp_conkey" physical="C:\" type="sftp" >
+			<params>
+				<param key="SFTP_HOST" value="altro.host" />
+				<param key="SFTP_PORT" value="2222" />
+				<param key="SFTP_USER" value="uuuuuu" />
+				<param key="SFTP_PASS" value="pppppp" />
+				<param key="SFTP_KEYBASE64" value="base64_openssh_key" />
+			</params>
+
+			<auth>
+
+			</auth>
+		</path>
+
+
+
+
+		<path virtual="/provaftp" physical="c:\" type="ftp" >
+			<params>
+				<param key="FTP_HOST" value="host.local" />
+				<param key="FTP_PORT" value="21" />
+				<param key="FTP_USER" value="spelaia" />
+				<param key="FTP_PASS" value="spelaia" />
+				<param key="FTP_PASSIVE" value="0" />
+				<!--param key="FTP_CURRDIR" value="/home/spelaia" /-->
+			</params>
+
+			<auth>
+
+			</auth>
+		</path>
+
+
+		<path virtual="/provaftps" physical="c:\" type="ftp" >
+			<params>
+				<param key="FTP_HOST" value="xxx.yy.it" />
+				<param key="FTP_PORT" value="21" />
+				<param key="FTP_USER" value="**********" />
+				<param key="FTP_PASS" value="xxxxxxxxxx" />
+				<param key="FTP_PASSIVE" value="0" />
+				<param key="FTP_CURRDIR" value="/xxxxxxxx" />
+			</params>
+
+			<auth>
+
+			</auth>
+		</path>
+
+
+
+		<path virtual="/prova_sftp_standard" physical="c:\"  type="sftp">
+			<params>
+				<param key="SFTP_HOST" value="rrrrrrrrr" />
+				<param key="SFTP_PORT" value="22" />
+				<param key="SFTP_USER" value="uuuuuu" />
+				<param key="SFTP_PASS" value="pppppppp" />
+				<param key="SFTP_KEYBASE64" value=""/>
+				<param key="SFTP_CURRDIR" value="/Pws_Gass" />
+			</params>
+			<auth>
+
+			</auth>
+		</path>
+
+
+
+	</paths>
+
+
+	<!-- Tutti gli utenti definiti -->
+	<users>
+		<!-- name="guest" e' un utente di sistema non aggiungibile -->
+		<!-- name="admin" e' un utente di sistema non aggiungibile -->
+
+		<user name="user1" pass="user1" />
+		<user name="user2" pass="user2" />
+
+	</users>
+</root>

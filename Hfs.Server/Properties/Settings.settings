@@ -1,0 +1,39 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Hfs.Server.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="VfsFilePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">~/App_Data/vfs.xml</Value>
+    </Setting>
+    <Setting Name="LogKeepDays" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="LogDirectory" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">~/App_Data/Log</Value>
+    </Setting>
+    <Setting Name="AdminPass" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">admin</Value>
+    </Setting>
+    <Setting Name="Debug" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="TempDirectory" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">~/App_Data/Temp</Value>
+    </Setting>
+    <Setting Name="AllowQueryStringParams" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LogAccess" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="TempFilesKeepDays" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="MaxConversionProcesses" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="MaxConversionWaitMsec" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">3000</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
