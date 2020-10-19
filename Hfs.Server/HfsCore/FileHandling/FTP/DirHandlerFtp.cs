@@ -40,7 +40,9 @@ namespace Hfs.Server.CODICE.CLASSI.FileHandling
                 Utility.NormalizeVirtualPath(string.Concat(this.mCurrentDir, Const.URI_SEPARATOR, this.mVfsResp.VirtualPath.Replace(this.mVfsResp.Path.Virtual, ""))).TrimStart(Const.URI_SEPARATOR));
 
             //Si collega
+            this.mClient.BulkListing = true;
             this.mClient.AutoConnect();
+          
             //Eventalmente imposta la current directory
             if (!string.IsNullOrWhiteSpace(this.mCurrentDir))
                 this.mClient.SetWorkingDirectory(this.mCurrentDir);

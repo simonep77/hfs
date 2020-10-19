@@ -90,6 +90,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\vfs.nocommit.xml" />
     <Content Include="App_Data\vfs.xml" />
     <Content Include="Global.asax" />
     <None Include="Informazioni.txt" />
