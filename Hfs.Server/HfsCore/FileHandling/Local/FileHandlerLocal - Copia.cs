@@ -111,7 +111,7 @@ namespace Hfs.Server.CODICE.CLASSI.FileHandling
         public override Stream OpenRead()
         {
 
-            var bcA = new Org.BouncyCastle.Crypto.a
+
 
 
             this.checkExist();

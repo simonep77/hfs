@@ -26,63 +26,6 @@ namespace Hfs.Server.CODICE.CLASSI
             }
         }
 
-        /// <summary>
-        /// Cripta stream su altro stream
-        /// </summary>
-        /// <param name="plain"></param>
-        /// <param name="cipher"></param>
-        /// <param name="password"></param>
-        public static void AesEncryptStream(Stream plain, Stream cipher, byte[] password)
-        {
-            using (var rijndael = Rijndael.Create())
-            {
-                var salt = GetSalt(rijndael.IV.Length);
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(password, salt, 1000);
-                rijndael.Key = pdb.GetBytes(32);
-                rijndael.GenerateIV(); //IV Casuale
-
-                //Scrive salt
-                cipher.Write(salt, 0, salt.Length);
-                //Scrive iv
-                cipher.Write(rijndael.IV, 0, rijndael.IV.Length);
-
-                //Scrive contenuto
-                using (CryptoStream cryptoStream = new CryptoStream(cipher, rijndael.CreateEncryptor(), CryptoStreamMode.Write))
-                {
-                    plain.CopyTo(cryptoStream);
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Decripta array di byte
-        /// </summary>
-        /// <param name="cipher"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        public static void AesDecryptBytes(Stream cipher, Stream plain, byte[] password)
-        {
-            using (var rijndael = Rijndael.Create())
-            {
-                //Legge salt
-                var salt = new byte[rijndael.IV.Length];
-                cipher.Read(salt, 0, salt.Length);
-
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(password, salt, 1000);
-                rijndael.Key = pdb.GetBytes(32);
-                //Legge IV
-                var iv = new byte[rijndael.IV.Length];
-                cipher.Read(iv, 0, iv.Length);
-                rijndael.IV = iv;
-                //Decripta
-                using (CryptoStream cryptoStream = new CryptoStream(plain, rijndael.CreateDecryptor(), CryptoStreamMode.Write))
-                {
-                    cipher.CopyTo(cryptoStream);
-                }
-            }
-
-        }
 
 
         /// <summary>

@@ -108,8 +108,8 @@ namespace Hfs.Client
 
         #region "PROPERTIES"
 
-        public bool EncryptionActive { get; set; }
-        public string EncryptionSecret { get; set; }
+        //public bool EncryptionActive { get; set; }
+        //public string EncryptionSecret { get; set; }
 
         /// <summary>
         /// Ultimo Codice Risposta
@@ -337,13 +337,6 @@ namespace Hfs.Client
         public void FileWriteFromStream(string vpath, Stream stream)
         {
             this.checkStream(stream, true, false, true);
-
-            Stream ssend = null;
-
-            if (this.EncryptionActive)
-            {
-
-            }
 
             byte[] buffer = null;
             if (stream.Length <= FS.MAX_SINGLE_FILE_SIZE)
