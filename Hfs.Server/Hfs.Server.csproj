@@ -183,6 +183,7 @@
     <Compile Include="HfsCore\FileHandling\HFS\FileHandlerHfs.cs" />
     <Compile Include="HfsCore\FileHandling\HFS\HfsWriteStream.cs" />
     <Compile Include="HfsCore\FileHandling\Local\DirHandlerLocal.cs" />
+    <Compile Include="HfsCore\FileHandling\Local\FileHandlerLocal - Copia.cs" />
     <Compile Include="HfsCore\FileHandling\Local\FileHandlerLocal.cs" />
     <Compile Include="HfsCore\FileHandling\Local\NetworkConnection.cs" />
     <Compile Include="HfsCore\FileHandling\SFTP\DirHandlerSFtp.cs" />

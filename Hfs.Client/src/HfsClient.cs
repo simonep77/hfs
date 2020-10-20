@@ -108,6 +108,9 @@ namespace Hfs.Client
 
         #region "PROPERTIES"
 
+        public bool EncryptionActive { get; set; }
+        public string EncryptionSecret { get; set; }
+
         /// <summary>
         /// Ultimo Codice Risposta
         /// </summary>
@@ -162,7 +165,7 @@ namespace Hfs.Client
         public HfsClient(Uri uri)
         {
             this.mUri = uri;
-            this.mUrl = string.Concat(uri.Scheme == FS.URI_HFS ? "http" : "https", "://", uri.Host, ":", uri.Port.ToString(), uri.AbsolutePath);
+            this.mUrl = $"{uri.Scheme}://{uri.Host}:{uri.Port}{uri.AbsolutePath}";
 
             //Info utente
             if (!string.IsNullOrEmpty(uri.UserInfo))
@@ -334,6 +337,14 @@ namespace Hfs.Client
         public void FileWriteFromStream(string vpath, Stream stream)
         {
             this.checkStream(stream, true, false, true);
+
+            Stream ssend = null;
+
+            if (this.EncryptionActive)
+            {
+
+            }
+
             byte[] buffer = null;
             if (stream.Length <= FS.MAX_SINGLE_FILE_SIZE)
             {

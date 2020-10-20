@@ -8,7 +8,7 @@ namespace Hfs.Server.HfsCore.Commands
 
         async protected override System.Threading.Tasks.Task CommandExecute()
         {
-            await this.WriteResponseText(CryptoUtils.DecryptString(this.Request.VPath, this.Request.Pass));
+            await this.WriteResponseText(CryptoUtils.AesDecryptString(this.Request.VPath, this.Request.Pass));
         }
     }
 }

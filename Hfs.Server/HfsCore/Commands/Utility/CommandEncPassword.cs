@@ -11,7 +11,7 @@ namespace Hfs.Server.HfsCore.Commands
 
         async protected override System.Threading.Tasks.Task CommandExecute()
         {
-            await this.WriteResponseText(CryptoUtils.EncryptString(this.Request.VPath, this.Request.Pass));
+            await this.WriteResponseText(CryptoUtils.AesEncryptString(this.Request.VPath, this.Request.Pass));
         }
     }
 }

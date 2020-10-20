@@ -208,148 +208,6 @@ namespace Hfs.Server.CODICE.CLASSI
         }
 
 
-        /// <summary>
-        /// Crea struttura azione per HFS
-        /// </summary>
-        /// <param name="azione"></param>
-        /// <returns></returns>
-        //public static HfsAction ActionFromString(string azione)
-        //{
-        //    HfsAction act = new HfsAction();
-        //    switch (azione)
-        //    {
-        //        case @"help":
-        //            act.Action = EAction.Help;
-        //            break;
-        //        case @"read":
-        //            act.Action = EAction.Read;
-        //            act.ActionVfs = VfsAction.Read;
-        //            break;
-        //        case @"write":
-        //            act.Action = EAction.Write;
-        //            act.ActionVfs = VfsAction.Write;
-        //            break;
-        //        case @"delete":
-        //            act.Action = EAction.Delete;
-        //            act.ActionVfs = VfsAction.Delete;
-        //            break;
-        //        case @"exist":
-        //            act.Action = EAction.Exist;
-        //            act.ActionVfs = VfsAction.List;
-        //            break;
-        //        case @"move":
-        //            act.Action = EAction.Move;
-        //            act.ActionVfs = VfsAction.Write;
-        //            act.ActionVfsDest = VfsAction.Write;
-        //            break;
-        //        case @"copy":
-        //            act.Action = EAction.Copy;
-        //            act.ActionVfs = VfsAction.Read;
-        //            act.ActionVfsDest = VfsAction.Write;
-        //            break;
-        //        case @"info":
-        //            act.Action = EAction.Info;
-        //            act.ActionVfs = VfsAction.List;
-        //            break;
-        //        case @"email":
-        //            act.Action = EAction.Email;
-        //            act.ActionVfs = VfsAction.Read;
-        //            break;
-        //        case @"touch":
-        //            act.Action = EAction.Touch;
-        //            act.ActionVfs = VfsAction.Write;
-        //            break;
-        //        case @"append":
-        //            act.Action = EAction.Append;
-        //            act.ActionVfs = VfsAction.Write;
-        //            break;
-        //        case @"setattr":
-        //            act.Action = EAction.SetAttr;
-        //            act.ActionVfs = VfsAction.Write;
-        //            break;
-        //        case @"hashsha1":
-        //            act.Action = EAction.HashSHA1;
-        //            act.ActionVfs = VfsAction.Read;
-        //            break;
-        //        case @"getlink":
-        //            act.Action = EAction.GetLink;
-        //            act.ActionVfs = VfsAction.Read;
-        //            break;
-        //        case @"convert":
-        //            act.Action = EAction.FileConvert;
-        //            act.ActionVfs = VfsAction.Read;
-        //            break;
-        //        case @"listf":
-        //            act.Action = EAction.ListF;
-        //            act.ActionVfs = VfsAction.List;
-        //            break;
-        //        case @"listd":
-        //            act.Action = EAction.ListD;
-        //            act.ActionVfs = VfsAction.List;
-        //            break;
-        //        case @"mkdir":
-        //            act.Action = EAction.MkDir;
-        //            act.ActionVfs = VfsAction.Write;
-        //            break;
-        //        case @"rmdir":
-        //            act.Action = EAction.RmDir;
-        //            act.ActionVfs = VfsAction.Delete;
-        //            break;
-        //        case @"mvdir":
-        //            act.Action = EAction.MvDir;
-        //            act.ActionVfs = VfsAction.Write;
-        //            act.ActionVfsDest = VfsAction.Write;
-        //            break;
-        //        case @"cpdir":
-        //            act.Action = EAction.CpDir;
-        //            act.ActionVfs = VfsAction.Read;
-        //            act.ActionVfsDest = VfsAction.Write;
-        //            break;
-        //        case @"existdir":
-        //            act.Action = EAction.ExistDir;
-        //            act.ActionVfs = VfsAction.List;
-        //            break;
-        //        case @"quotadir":
-        //            act.Action = EAction.QuotaDir;
-        //            act.ActionVfs = VfsAction.List;
-        //            break;
-        //        case @"convertdir":
-        //            act.Action = EAction.ConvertDir;
-        //            act.ActionVfs = VfsAction.Read;
-        //            break;
-        //        case @"listvfs":
-        //            act.Action = EAction.ListVfs;
-        //            act.ActionVfs = VfsAction.List;
-        //            break;
-        //        case @"checkvfs":
-        //            act.Action = EAction.CheckVfs;
-        //            act.ActionVfs = VfsAction.Read;
-        //            break;
-        //        case @"reloadvfs":
-        //            act.Action = EAction.ReloadVfs;
-        //            act.ActionVfs = VfsAction.Write;
-        //            break;
-        //        case @"cleantempvfs":
-        //            act.Action = EAction.CleanTempVfs;
-        //            act.ActionVfs = VfsAction.Write;
-        //            break;
-        //        case @"restart":
-        //            act.Action = EAction.Restart;
-        //            act.ActionVfs = VfsAction.Write;
-        //            break;
-        //        case @"getstats":
-        //            act.Action = EAction.GetStats;
-        //            act.ActionVfs = VfsAction.Read;
-        //            break;
-        //        default:
-        //            act.Action = EAction.Unknown;
-        //            act.ActionVfs = VfsAction.None;
-        //            break;
-        //    }
-
-        //    return act;
-        //}
-
 
         /// <summary>
         /// Imposta rappresentazione xml delle informazioni di un file
@@ -786,7 +644,7 @@ namespace Hfs.Server.CODICE.CLASSI
                             ":", context.Request.Url.Port,
                             context.Request.Url.AbsolutePath,
                             @"?", Const.QS_LINK, "=",
-                            HttpUtility.UrlEncode(CryptoUtils.EncryptString(sToEncode, Const.HFS_ENC_KEY)));
+                            HttpUtility.UrlEncode(CryptoUtils.AesEncryptString(sToEncode, Const.HFS_ENC_KEY)));
 
         }
 
@@ -801,7 +659,7 @@ namespace Hfs.Server.CODICE.CLASSI
             try
             {
                 //Decodifica
-                readlink = CryptoUtils.DecryptString(readlink, Const.HFS_ENC_KEY);
+                readlink = CryptoUtils.AesDecryptString(readlink, Const.HFS_ENC_KEY);
             }
             catch (Exception)
             {

@@ -8,17 +8,20 @@ modificando il file MSBuild. Per altre informazioni su questo argomento, vedere 
     <_PublishTargetUrl>C:\Users\simone.pelaia\Desktop\LAV\SW\hfs</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="App_Data/vfs.nocommit.xml">
+      <publishTime>10/19/2020 18:51:32</publishTime>
+    </File>
     <File Include="App_Data/vfs.xml">
-      <publishTime>10/19/2020 13:01:13</publishTime>
+      <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>10/19/2020 13:05:34</publishTime>
+      <publishTime>10/19/2020 19:04:20</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>10/19/2020 13:05:34</publishTime>
+      <publishTime>10/19/2020 19:04:20</publishTime>
     </File>
     <File Include="bin/BouncyCastle.Crypto.dll">
-      <publishTime>02/21/2020 16:24:54</publishTime>
+      <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="bin/edtFTPnet.dll">
       <publishTime>02/11/2013 14:37:00</publishTime>
@@ -27,13 +30,13 @@ modificando il file MSBuild. Per altre informazioni su questo argomento, vedere 
       <publishTime>10/13/2020 14:05:32</publishTime>
     </File>
     <File Include="bin/Hfs.Client.dll">
-      <publishTime>10/19/2020 13:04:45</publishTime>
+      <publishTime>10/19/2020 19:04:17</publishTime>
     </File>
     <File Include="bin/Hfs.Client.pdb">
       <publishTime>10/05/2020 15:29:14</publishTime>
     </File>
     <File Include="bin/Hfs.Server.dll">
-      <publishTime>10/19/2020 13:05:32</publishTime>
+      <publishTime>10/19/2020 19:04:17</publishTime>
     </File>
     <File Include="bin/HttpFileServer.dll">
       <publishTime>09/30/2020 16:38:36</publishTime>
@@ -42,31 +45,31 @@ modificando il file MSBuild. Per altre informazioni su questo argomento, vedere 
       <publishTime>09/30/2020 12:49:02</publishTime>
     </File>
     <File Include="bin/itextsharp.dll">
-      <publishTime>08/27/2020 11:20:20</publishTime>
+      <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
-      <publishTime>09/29/2020 12:40:52</publishTime>
+      <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="bin/Renci.SshNet.dll">
-      <publishTime>10/16/2017 20:53:06</publishTime>
+      <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
-      <publishTime>11/28/2018 13:04:24</publishTime>
+      <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="bin/System.Web.Mvc.dll">
-      <publishTime>11/28/2018 12:59:46</publishTime>
+      <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="bin/System.Web.Razor.dll">
-      <publishTime>11/28/2018 13:00:12</publishTime>
+      <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Deployment.dll">
-      <publishTime>11/28/2018 13:04:24</publishTime>
+      <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.dll">
-      <publishTime>11/28/2018 13:04:24</publishTime>
+      <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Razor.dll">
-      <publishTime>11/28/2018 13:04:24</publishTime>
+      <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="Informazioni.txt">
       <publishTime>09/30/2020 11:10:17</publishTime>
@@ -75,13 +78,13 @@ modificando il file MSBuild. Per altre informazioni su questo argomento, vedere 
       <publishTime>09/29/2020 18:09:05</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/19/2020 13:05:33</publishTime>
+      <publishTime>10/19/2020 19:04:18</publishTime>
     </File>
     <File Include="Views/web.config">
       <publishTime>09/29/2020 12:40:50</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/19/2020 13:04:59</publishTime>
+      <publishTime>10/19/2020 19:04:17</publishTime>
     </File>
   </ItemGroup>
 </Project>
