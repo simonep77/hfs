@@ -15,10 +15,10 @@ modificando il file MSBuild. Per altre informazioni su questo argomento, vedere 
       <publishTime>10/19/2020 15:21:32</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>10/19/2020 19:04:20</publishTime>
+      <publishTime>10/26/2020 18:18:54</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>10/19/2020 19:04:20</publishTime>
+      <publishTime>10/26/2020 18:18:54</publishTime>
     </File>
     <File Include="bin/BouncyCastle.Crypto.dll">
       <publishTime>10/19/2020 15:21:32</publishTime>
@@ -30,13 +30,13 @@ modificando il file MSBuild. Per altre informazioni su questo argomento, vedere 
       <publishTime>10/13/2020 14:05:32</publishTime>
     </File>
     <File Include="bin/Hfs.Client.dll">
-      <publishTime>10/19/2020 19:04:17</publishTime>
+      <publishTime>10/26/2020 17:53:33</publishTime>
     </File>
     <File Include="bin/Hfs.Client.pdb">
       <publishTime>10/05/2020 15:29:14</publishTime>
     </File>
     <File Include="bin/Hfs.Server.dll">
-      <publishTime>10/19/2020 19:04:17</publishTime>
+      <publishTime>10/26/2020 18:18:51</publishTime>
     </File>
     <File Include="bin/HttpFileServer.dll">
       <publishTime>09/30/2020 16:38:36</publishTime>
@@ -78,13 +78,13 @@ modificando il file MSBuild. Per altre informazioni su questo argomento, vedere 
       <publishTime>09/29/2020 18:09:05</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/19/2020 19:04:18</publishTime>
+      <publishTime>10/26/2020 18:18:52</publishTime>
     </File>
     <File Include="Views/web.config">
       <publishTime>09/29/2020 12:40:50</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/19/2020 19:04:17</publishTime>
+      <publishTime>10/26/2020 17:53:45</publishTime>
     </File>
   </ItemGroup>
 </Project>

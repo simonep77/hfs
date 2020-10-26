@@ -286,10 +286,11 @@ namespace Hfs.Server.CODICE.VFS
                 //    throw new ApplicationException($"Utente '{req.User}' non configurato per la risorsa");
 
                 //Calcola path virtuale e fisico
-                if (oResp.Path.IsLocal)
-                    oResp.VirtualPath = vpath;
-                else
-                    oResp.VirtualPath = sVPathLow.Remove(0, Math.Min(sVPathLow.Length, oResp.Path.Virtual.Length + 1));
+                oResp.VirtualPath = vpath;
+                //if (oResp.Path.IsLocal)
+                //    oResp.VirtualPath = vpath;
+                //else
+                //    oResp.VirtualPath = sVPathLow.Remove(0, Math.Min(sVPathLow.Length, oResp.Path.Virtual.Length + 1));
 
                 oResp.PhysicalPath = oResp.Path.Translate(oResp.VirtualPath, oResp.User);
                 oResp.FileConvertType = req.Attr.ToLower();
