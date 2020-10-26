@@ -97,7 +97,7 @@ namespace Hfs.Server.CODICE.CLASSI.FileHandling
             Regex rgx = null;
             //Verifica pattern
             if (pattern != "*")
-                rgx = new Regex(Regex.Escape(pattern).Replace(@"\*", @".*"), RegexOptions.IgnoreCase);
+                rgx = Utility.GetRegexFromPattern(pattern);
 
             using (var xw = new XmlWrite())
             {
@@ -163,7 +163,7 @@ namespace Hfs.Server.CODICE.CLASSI.FileHandling
             Regex rgx = null;
             //Verifica pattern
             if (pattern != "*")
-                rgx = new Regex(Regex.Escape(pattern).Replace(@"\*", @".*"), RegexOptions.IgnoreCase);
+                rgx = Utility.GetRegexFromPattern(pattern);
 
             using (var xw = new XmlWrite())
             {

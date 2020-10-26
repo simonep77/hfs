@@ -57,14 +57,14 @@ namespace Hfs.Server.CODICE.CLASSI.FileHandling
         {
             Regex rgx = new Regex(@"(<name>" + this.mClient.CurrentDirectory + ")");
 
-            return rgx.Replace(this.mClient.DirectoryListFilesFilter(this.mVfsResp.VirtualPath, pattern, recursive), string.Concat("<name>", this.mVfsResp.Path.Virtual));
+            return rgx.Replace(this.mClient.DirectoryListFilesFilterXML(this.mVfsResp.VirtualPath, pattern, recursive), string.Concat("<name>", this.mVfsResp.Path.Virtual));
         }
 
         public override string GetDirsXml(string pattern, bool recursive)
         {
             Regex rgx = new Regex(@"(<name>" + this.mClient.CurrentDirectory + ")");
 
-            return rgx.Replace(this.mClient.DirectoryListSubDirFilter(this.mVfsResp.VirtualPath, pattern, recursive), string.Concat("<name>", this.mVfsResp.Path.Virtual));
+            return rgx.Replace(this.mClient.DirectoryListSubDirFilterXML(this.mVfsResp.VirtualPath, pattern, recursive), string.Concat("<name>", this.mVfsResp.Path.Virtual));
         }
 
         public override IFileHandler GetFileHandler(string name)

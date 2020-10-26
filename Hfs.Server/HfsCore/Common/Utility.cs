@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -736,6 +737,18 @@ namespace Hfs.Server.CODICE.CLASSI
                 HfsData.Logger.WriteException(ELogType.HfsGlobal, e);
             }
             
+        }
+
+
+        /// <summary>
+        /// Dato un pattern hfs ritorna la regex per il confronto
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
+        public static Regex GetRegexFromPattern(string pattern)
+        {
+            pattern = $"^{Regex.Escape(pattern).Replace(@"\*", @".*")}$";
+            return new Regex(pattern, RegexOptions.IgnoreCase);
         }
 
     }

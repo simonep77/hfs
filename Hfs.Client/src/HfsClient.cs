@@ -4,6 +4,11 @@ using System.Text;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data;
+using System.Globalization;
+using System.Threading.Tasks;
+using System.Web;
+using System.Net.Http;
 
 namespace Hfs.Client
 {
@@ -97,11 +102,7 @@ namespace Hfs.Client
         private string mLastRespMsg;
         private int mLastRespCode;
         private ParamList mParams = new ParamList();
-        private string mUrl;
-        private string mUser;
-        private string mPass;
         private string mCurrentDirectory;
-        private Uri mUri;
 
         private WebClient mWeb = new WebClient();
         #endregion
@@ -110,6 +111,18 @@ namespace Hfs.Client
 
         //public bool EncryptionActive { get; set; }
         //public string EncryptionSecret { get; set; }
+
+        public string Url { get;}
+
+        /// <summary>
+        /// Nome utente
+        /// </summary>
+        public string User { get; }
+
+        /// <summary>
+        /// Password
+        /// </summary>
+        public string Pass { get; }
 
         /// <summary>
         /// Ultimo Codice Risposta
@@ -125,15 +138,6 @@ namespace Hfs.Client
         public string LastRespMsg
         {
             get { return this.mLastRespMsg; }
-        }
-
-
-        /// <summary>
-        /// Uri
-        /// </summary>
-        public Uri Uri
-        {
-            get { return this.mUri; }
         }
 
         /// <summary>
@@ -162,19 +166,25 @@ namespace Hfs.Client
 
         #region "CONSTRUCTORS"
 
+        public HfsClient(string uriString): this(new Uri(uriString.Replace(@"hfss://", @"https://").Replace(@"hfs://", @"http://")))
+        {
+
+        }
+
         public HfsClient(Uri uri)
         {
-            this.mUri = uri;
-            this.mUrl = $"{uri.Scheme}://{uri.Host}:{uri.Port}{uri.AbsolutePath}";
 
             //Info utente
             if (!string.IsNullOrEmpty(uri.UserInfo))
             {
-                string[] arr = uri.UserInfo.Split(':');
-                this.mUser = arr[0];
+                var arr = uri.UserInfo.Split(':');
+                this.User = arr[0];
                 if (arr.Length > 1)
-                    this.mPass = arr[1];
+                    this.Pass = arr[1];
             }
+
+            //reimposta l'url senza utenza
+            this.Url = uri.OriginalString.Replace(string.Concat(uri.UserInfo, @"@"), string.Empty);
 
             //Current directory
             if (!string.IsNullOrEmpty(uri.Query))
@@ -559,50 +569,129 @@ namespace Hfs.Client
             return Convert.ToInt64(Encoding.ASCII.GetString(this.sendRequest(this.mParams)));
         }
 
-        public string DirectoryListFiles(string vpath)
-        {
-            return this.DirectoryListFilesFilter(vpath, string.Empty, false);
-        }
 
         /// <summary>
-        /// Elenca files presenti in directory remota
+        /// Esegue lista dei file ritornando il dato RAW del server (XML)
         /// </summary>
         /// <param name="vpath"></param>
-        public string DirectoryListFilesFilter(string vpath, string pattern, bool recursive)
+        /// <param name="pattern"></param>
+        /// <param name="recursive"></param>
+        /// <returns></returns>
+        public string DirectoryListFilesFilterXML(string vpath, string pattern, bool recursive)
         {
             this.mParams.Add(FS.PARAM_ACTION, FS.ACTION_LISTF);
             this.mParams.Add(FS.PARAM_VPATH, vpath);
             this.mParams.Add(FS.PARAM_PATTERN, pattern);
             if (recursive)
-            {
                 this.mParams.Add(FS.PARAM_ATTR, "R");
-            }
+
             return Encoding.UTF8.GetString(this.sendRequest(this.mParams));
-
-        }
-
-
-        public string DirectoryListSubDir(string vpath)
-        {
-            return this.DirectoryListSubDirFilter(vpath, string.Empty, false);
+          
         }
 
         /// <summary>
-        /// Elenca files presenti in directory remota
-        /// </summary>
-        /// <param name="vpath"></param>
-        public string DirectoryListSubDirFilter(string vpath, string pattern, bool recursive)
+        /// Esegue lista delle directory ritornando il dato RAW del server (XML)
+        ///  </summary>
+        ///  <param name="vpath"></param>
+        public string DirectoryListSubDirFilterXML(string vpath, string pattern, bool recursive)
         {
             this.mParams.Add(FS.PARAM_ACTION, FS.ACTION_LISTD);
             this.mParams.Add(FS.PARAM_VPATH, vpath);
             this.mParams.Add(FS.PARAM_PATTERN, pattern);
             if (recursive)
-            {
                 this.mParams.Add(FS.PARAM_ATTR, "R");
-            }
+            
             return Encoding.UTF8.GetString(this.sendRequest(this.mParams));
         }
 
+
+
+        /// <summary>
+        /// Ricerca files in directory remota
+        /// </summary>
+        /// <param name="vpath"></param>
+        /// <returns></returns>
+        public FSFileInfo[] DirectoryListFiles(string vpath)
+        {
+            return this.DirectoryListFilesFilter(vpath, string.Empty, false);
+        }
+
+        /// <summary>
+        ///  Elenca files presenti in directory remota con parametri di filtro e ricorsione
+        ///  </summary>
+        ///  <param name="vpath"></param>
+        public FSFileInfo[] DirectoryListFilesFilter(string vpath, string pattern, bool recursive)
+        {
+
+            string sRet = this.DirectoryListFilesFilterXML(vpath, pattern, recursive);
+
+            // Carica dati da xml
+            using (DataSet ds = new DataSet())
+            {
+                using (StringReader sr = new StringReader(sRet))
+                {
+                    ds.ReadXml(sr);
+                }
+
+                DataTable tab = ds.Tables["file"];
+                int iFiles = (tab != null) ? tab.Rows.Count : 0;
+                
+                FSFileInfo[] oList = new FSFileInfo[iFiles];
+                using (tab)
+                {
+                    for (int i = 0; i <= iFiles - 1; i++)
+                    {
+                        oList[i] = this.getFileInfoFromRow(tab.Rows[i]);
+                    }
+                }
+                // Ritorna lista
+                return oList;
+            }
+        }
+
+
+        /// <summary>
+        ///  Elenca files presenti in directory remota
+        /// </summary>
+        /// <param name="vpath"></param>
+        /// <returns></returns>
+        public FSDirInfo[] DirectoryListSubDir(string vpath)
+        {
+            return this.DirectoryListSubDirFilter(vpath, string.Empty, false);
+        }
+
+        /// <summary>
+        ///  Elenca files presenti in directory remota con parametri di filtro e ricorsione
+        ///  </summary>
+        ///  <param name="vpath"></param>
+        public FSDirInfo[] DirectoryListSubDirFilter(string vpath, string pattern, bool recursive)
+        {
+            string sRet = this.DirectoryListSubDirFilterXML(vpath, pattern, recursive);
+
+            // Carica dati da xml
+            using (DataSet ds = new DataSet())
+            {
+                using (StringReader sr = new StringReader(sRet))
+                {
+                    ds.ReadXml(sr);
+                }
+                DataTable tab = ds.Tables["dir"];
+
+                int iDirs = (tab != null) ? tab.Rows.Count : 0;
+
+                FSDirInfo[] oList = new FSDirInfo[iDirs - 1 + 1];
+
+                using (tab)
+                {
+                    for (int i = 0; i <= iDirs - 1; i++)
+                    {
+                        oList[i] = this.getDirInfoFromRow(tab.Rows[i]);
+                    }
+                }
+                // Ritorna lista
+                return oList;
+            }
+        }
 
         /// <summary>
         /// Ricarica database VFS (Virtual File System)
@@ -634,6 +723,45 @@ namespace Hfs.Client
         #region "PRIVATE METHODS"
 
 
+        #region Varie
+
+        private DateTime parseData(string value)
+        {
+            return DateTime.ParseExact(value, "yyyyMMddHHmmss", CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        ///  Carica FileInfo da datarow
+        ///  </summary>
+        ///  <param name="row"></param>
+        ///  <returns></returns>
+        private FSFileInfo getFileInfoFromRow(DataRow row)
+        {
+            return new FSFileInfo((string)row["name"], 
+                Convert.ToInt64(row["len"]), 
+                (FileAttributes)Convert.ToInt32(row["attr"].ToString()), 
+                this.parseData(row["ctime"].ToString()), 
+                this.parseData(row["wtime"].ToString()), 
+                new FSPermissionHFS(row["access"].ToString()));
+        }
+
+        /// <summary>
+        ///  Carica FSDirInfo da datarow
+        ///  </summary>
+        ///  <param name="row"></param>
+        ///  <returns></returns>
+        private FSDirInfo getDirInfoFromRow(DataRow row)
+        {
+
+
+            return new FSDirInfo(row["name"].ToString(), 
+                this.parseData(row["ctime"].ToString()), 
+                new FSPermissionHFS(row["access"].ToString()));
+        }
+
+        #endregion
+
+
         #region "Send Request"
 
         /// <summary>
@@ -661,10 +789,10 @@ namespace Hfs.Client
                 this.mWeb.Headers.Clear();
                 this.mWeb.Headers.Add("User-Agent", "HFS Client.NET");
                 //Imposta user e pass se non presenti
-                if (!string.IsNullOrEmpty(this.mUser))
+                if (!string.IsNullOrEmpty(this.User))
                 {
-                    this.mParams.Add(FS.PARAM_USER, this.mUser);
-                    this.mParams.Add(FS.PARAM_PASS, this.mPass);
+                    this.mParams.Add(FS.PARAM_USER, this.User);
+                    this.mParams.Add(FS.PARAM_PASS, this.Pass);
                 }
 
                 //Reimposta valori path se necessario
@@ -702,11 +830,11 @@ namespace Hfs.Client
                 byte[] buf = null;
                 if (buffer == null)
                 {
-                    buf = this.mWeb.DownloadData(this.mUrl);
+                    buf = this.mWeb.DownloadData(this.Url);
                 }
                 else
                 {
-                    using (Stream oStream = this.mWeb.OpenWrite(this.mUrl, "POST"))
+                    using (Stream oStream = this.mWeb.OpenWrite(this.Url, "POST"))
                     {
                         oStream.Write(buffer, offset, length);
                         oStream.Flush();
