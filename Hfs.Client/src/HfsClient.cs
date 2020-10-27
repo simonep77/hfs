@@ -166,12 +166,23 @@ namespace Hfs.Client
 
         #region "CONSTRUCTORS"
 
+        /// <summary>
+        /// E' possibile specificare l'url di accesso nelle seguenti modalita':
+        /// http://<serverhfs>/hfs
+        /// https://<serverhfs>/hfs (se attivo)
+        /// hfs://<serverhfs>/hfs (alias di http)
+        /// hfss://<serverhfs>/hfs (alias di https)
+        /// In tutti i casi e' possibile specificare le credenziali in notazione uri: es. http://user:pass@<serverhfs>/hfs
+        /// In tutti i casi e' possibile specificare una current directory per poi utilizzare vpath relativi: es. http://user:pass@<serverhfs>/hfs?cd=/my_root/sub1.
+        /// Utente e password sono impostabili anche successivamente valorizzando le rispettive proprieta'
+        /// </summary>
+        /// <param name="uriString"></param>
         public HfsClient(string uriString): this(new Uri(uriString.Replace(@"hfss://", @"https://").Replace(@"hfs://", @"http://")))
         {
 
         }
 
-        public HfsClient(Uri uri)
+        private HfsClient(Uri uri)
         {
 
             //Info utente
