@@ -14,7 +14,7 @@ namespace Hfs.Server.CODICE.CLASSI.FileHandling
         private HfsClient mClient;
 
         public FileHandlerHfs(HfsResponseVfs resp, Uri uri)
-            : this(resp, new HfsClient(uri))
+            : this(resp, new HfsClient(uri.AbsoluteUri))
         {  }
 
         public FileHandlerHfs(HfsResponseVfs resp, HfsClient cli)

@@ -1,0 +1,6 @@
+C:\Users\simone.pelaia\Source\Repos\simonep77\hfs\Hfs.Client\bin\Debug\Hfs.Client.dll
+C:\Users\simone.pelaia\Source\Repos\simonep77\hfs\Hfs.Client\bin\Debug\Hfs.Client.pdb
+C:\Users\simone.pelaia\Source\Repos\simonep77\hfs\Hfs.Client\obj\Debug\Hfs.Client.csproj.CoreCompileInputs.cache
+C:\Users\simone.pelaia\Source\Repos\simonep77\hfs\Hfs.Client\obj\Debug\Hfs.Client.dll
+C:\Users\simone.pelaia\Source\Repos\simonep77\hfs\Hfs.Client\obj\Debug\Hfs.Client.pdb
+C:\Users\simone.pelaia\Source\Repos\simonep77\hfs\Hfs.Client\obj\Debug\Hfs.Client.csprojAssemblyReference.cache

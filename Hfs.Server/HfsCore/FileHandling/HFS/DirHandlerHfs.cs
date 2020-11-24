@@ -19,7 +19,7 @@ namespace Hfs.Server.CODICE.CLASSI.FileHandling
         public DirHandlerHfs(HfsResponseVfs resp)
         {
             this.mVfsResp = resp;
-            this.mClient = new HfsClient(new Uri(resp.Path.Physical));
+            this.mClient = new HfsClient(resp.Path.Physical);
             this.mFullName = Utility.HfsCombine(this.mClient.CurrentDirectory, resp.VirtualPath);
         }
 

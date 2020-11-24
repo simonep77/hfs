@@ -1,0 +1,3 @@
+C:\Users\simone.pelaia\Source\Repos\simonep77\hfs\Hfs.Client\bin\Release\Hfs.Client.dll
+C:\Users\simone.pelaia\Source\Repos\simonep77\hfs\Hfs.Client\obj\Release\Hfs.Client.csproj.CoreCompileInputs.cache
+C:\Users\simone.pelaia\Source\Repos\simonep77\hfs\Hfs.Client\obj\Release\Hfs.Client.dll
