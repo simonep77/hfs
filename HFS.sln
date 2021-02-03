@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hfs.Server", "Hfs.Server\Hf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hfs.Client", "Hfs.Client\Hfs.Client.csproj", "{5749DAE9-3130-4ECE-8B58-7DDA2222208D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hfs.App.Test", "Hfs.App.Test\Hfs.App.Test.csproj", "{E739BCEC-52D2-4E44-AF67-E7D946B5ECDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hfs.Core.Test", "Hfs.Core.Test\Hfs.Core.Test.csproj", "{4D228C2D-B3FF-4B1D-9F2A-5205FD00BB6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{5749DAE9-3130-4ECE-8B58-7DDA2222208D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5749DAE9-3130-4ECE-8B58-7DDA2222208D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5749DAE9-3130-4ECE-8B58-7DDA2222208D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E739BCEC-52D2-4E44-AF67-E7D946B5ECDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E739BCEC-52D2-4E44-AF67-E7D946B5ECDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E739BCEC-52D2-4E44-AF67-E7D946B5ECDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E739BCEC-52D2-4E44-AF67-E7D946B5ECDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D228C2D-B3FF-4B1D-9F2A-5205FD00BB6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D228C2D-B3FF-4B1D-9F2A-5205FD00BB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D228C2D-B3FF-4B1D-9F2A-5205FD00BB6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D228C2D-B3FF-4B1D-9F2A-5205FD00BB6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

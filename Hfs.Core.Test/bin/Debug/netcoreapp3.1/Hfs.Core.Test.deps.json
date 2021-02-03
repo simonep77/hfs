@@ -8,13 +8,13 @@
     ".NETCoreApp,Version=v3.1": {
       "Hfs.Core.Test/1.0.0": {
         "dependencies": {
-          "Hfs.Client": "2.0.3"
+          "Hfs.Client": "2.0.4"
         },
         "runtime": {
           "Hfs.Core.Test.dll": {}
         }
       },
-      "Hfs.Client/2.0.3": {
+      "Hfs.Client/2.0.4": {
         "runtime": {
           "Hfs.Client.dll": {}
         }
@@ -27,7 +27,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Hfs.Client/2.0.3": {
+    "Hfs.Client/2.0.4": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

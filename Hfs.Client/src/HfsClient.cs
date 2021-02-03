@@ -939,9 +939,11 @@ namespace Hfs.Client
 
                         using (var s = resp.GetResponseStream())
                         {
-                            buf = new byte[resp.ContentLength];
-
-                            s.Read(buf, 0, buf.Length);
+                            using (var ms = new MemoryStream())
+                            {
+                                s.CopyTo(ms);
+                                buf = ms.ToArray();
+                            }
                         }
 
                     }

@@ -28,6 +28,16 @@ namespace Hfs.Core.Test
                     cli.FileWriteFromStream(@"TestPNG.PDF", f);
                 }
 
+
+                var b = cli.FileExist(@"TestPNG.PDF");
+
+                Console.WriteLine($"File exists: {b}");
+
+                var f1 = cli.FileReadToBuffer(@"TestPNG.PDF");
+
+                Console.WriteLine($"File read: {f1.Length}");
+
+
             }
 
 
