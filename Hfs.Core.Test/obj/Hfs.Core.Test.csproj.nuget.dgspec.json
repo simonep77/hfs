@@ -4,14 +4,14 @@
     "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Core.Test\\Hfs.Core.Test.csproj": {}
   },
   "projects": {
-    "C:\\Users\\simone.pelaia\\Source\\Repos\\simonep77\\hfs\\Hfs.Client\\Hfs.Client.csproj": {
-      "version": "2.0.4",
+    "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Client\\Hfs.Client.csproj": {
+      "version": "2.0.5",
       "restore": {
-        "projectUniqueName": "C:\\Users\\simone.pelaia\\Source\\Repos\\simonep77\\hfs\\Hfs.Client\\Hfs.Client.csproj",
+        "projectUniqueName": "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Client\\Hfs.Client.csproj",
         "projectName": "Hfs.Client",
-        "projectPath": "C:\\Users\\simone.pelaia\\Source\\Repos\\simonep77\\hfs\\Hfs.Client\\Hfs.Client.csproj",
+        "projectPath": "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Client\\Hfs.Client.csproj",
         "packagesPath": "C:\\Users\\simone.pelaia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\simone.pelaia\\Source\\Repos\\simonep77\\hfs\\Hfs.Client\\obj\\",
+        "outputPath": "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Client\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\simone.pelaia\\AppData\\Roaming\\NuGet\\NuGet.Config",
