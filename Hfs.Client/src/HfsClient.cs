@@ -369,6 +369,10 @@ namespace Hfs.Client
                 stream.Read(buffer, 0, buffer.Length);
                 //Scrive buffer
                 this.FileWriteFromBuffer(vpath, buffer);
+                this.mParams.Add(FS.PARAM_ACTION, FS.ACTION_WRITE);
+                this.mParams.Add(FS.PARAM_VPATH, vpath);
+                this.sendRequest(this.mParams, buffer, 0, buffer.Length);
+
                 //Annulla puntatore
                 buffer = null;
             }
