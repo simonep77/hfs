@@ -105,6 +105,7 @@ namespace Hfs.Client
         private string mCurrentDirectory;
 
         private WebClient mWeb = new WebClient();
+        
         #endregion
 
         #region "PROPERTIES"
@@ -795,8 +796,10 @@ namespace Hfs.Client
         /// <param name="param"></param>
         /// <param name="buffer"></param>
         /// <returns></returns>
-        private byte[] sendRequest(ParamList paramlist, byte[] buffer, int offset, int length)
+        private byte[] sendRequest2(ParamList paramlist, byte[] buffer, int offset, int length)
         {
+            string hfsReturnCode;
+            string hfsReturnMsg;
             this.setResponse(0, string.Empty);
             try
             {
@@ -845,19 +848,25 @@ namespace Hfs.Client
                 if (buffer == null)
                 {
                     buf = this.mWeb.DownloadData(this.Url);
+
+                    hfsReturnCode = this.mWeb.ResponseHeaders[FS.HEADER_STATUS_CODE];
+                    hfsReturnMsg = this.mWeb.ResponseHeaders[FS.HEADER_STATUS_MSG];
                 }
                 else
                 {
-                    using (Stream oStream = this.mWeb.OpenWrite(this.Url, "POST"))
+                    using (var oStream = this.mWeb.OpenWrite(this.Url, "POST"))
                     {
                         oStream.Write(buffer, offset, length);
                         oStream.Flush();
-                        oStream.Close();
+
+                        hfsReturnCode = this.mWeb.ResponseHeaders[FS.HEADER_STATUS_CODE];
+                        hfsReturnMsg = this.mWeb.ResponseHeaders[FS.HEADER_STATUS_MSG];
+                        //oStream.Close();
                     }
                 }
 
                 //Testa esito
-                this.checkResponse(this.mWeb);
+                this.checkResponse(hfsReturnCode, hfsReturnMsg);
 
                 //Ritorna buffer output
                 return buf;
@@ -868,6 +877,107 @@ namespace Hfs.Client
             }
 
         }
+
+
+        private byte[] sendRequest(ParamList paramlist, byte[] buffer, int offset, int length)
+        {
+            var hfsReturnCode = string.Empty;
+            var hfsReturnMsg = string.Empty;
+            
+            this.setResponse(0, string.Empty);
+            try
+            {
+                var wr = WebRequest.CreateHttp(this.Url);
+                
+                wr.Headers.Add("User-Agent", "HFS Client.NET");
+                //Imposta user e pass se non presenti
+                if (!string.IsNullOrEmpty(this.User))
+                {
+                    this.mParams.Add(FS.PARAM_USER, this.User);
+                    this.mParams.Add(FS.PARAM_PASS, this.Pass);
+                }
+
+                //Reimposta valori path se necessario
+                string sVPath = string.Empty;
+                if (paramlist.TryGetValue(FS.PARAM_VPATH, out sVPath))
+                {
+                    try
+                    {
+                        paramlist[FS.PARAM_VPATH] = this.getFullVPath(sVPath);
+                    }
+                    catch (Exception)
+                    {
+                        throw new ArgumentException("Il path virtuale fornito non e' valorizzato");
+                    }
+                }
+                if (paramlist.TryGetValue(FS.PARAM_VPATHDEST, out sVPath))
+                {
+                    try
+                    {
+                        paramlist[FS.PARAM_VPATHDEST] = this.getFullVPath(sVPath);
+                    }
+                    catch (Exception)
+                    {
+                        throw new ArgumentException("Il path virtuale di destinazione fornito non e' valorizzato");
+                    }
+                }
+
+
+                foreach (KeyValuePair<string, string> oPair in paramlist)
+                {
+                    wr.Headers.Add(oPair.Key, oPair.Value);
+                }
+
+                //Esegue
+                byte[] buf = null;
+                WebResponse resp = null;
+                try
+                {
+                    if (buffer == null)
+                    {
+                        resp = wr.GetResponse();
+
+                        using (var s = resp.GetResponseStream())
+                        {
+                            buf = new byte[resp.ContentLength];
+
+                            s.Read(buf, 0, buf.Length);
+                        }
+
+                    }
+                    else
+                    {
+                        wr.Method = "POST";
+
+                        using (var oStream = wr.GetRequestStream())
+                        {
+                            oStream.Write(buffer, offset, length);
+                            oStream.Flush();
+                        }
+
+                        resp = wr.GetResponse();
+                    }
+
+
+                    //Testa esito
+                    this.checkResponse(resp.Headers[FS.HEADER_STATUS_CODE], resp.Headers[FS.HEADER_STATUS_MSG]);
+                }
+                finally
+                {
+                    resp?.Dispose();
+                }
+
+                //Ritorna buffer output
+                return buf;
+            }
+            finally
+            {
+                this.mParams.Clear();
+            }
+
+        }
+
+
 
         #endregion
 
@@ -913,10 +1023,8 @@ namespace Hfs.Client
         /// <summary>
         /// Controlla esito chiamata
         /// </summary>
-        private void checkResponse(WebClient http)
+        private void checkResponse(string sCode, string sMsg)
         {
-            string sCode = http.ResponseHeaders [FS.HEADER_STATUS_CODE];
-            string sMsg = http.ResponseHeaders[FS.HEADER_STATUS_MSG];
 
             //Presenza headers
             if (string.IsNullOrEmpty(sCode) || sMsg == null)
