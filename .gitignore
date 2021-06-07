@@ -14,3 +14,4 @@
 /packages
 /Hfs.Server/App_Data/vfs.nocommit.xml
 /Hfs.App.Test
+/Hfs.Core.Test/Hfs.Core.Test.csproj.user

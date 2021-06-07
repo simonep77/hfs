@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Web;
 using System.Net.Http;
+using System.Xml;
 
 namespace Hfs.Client
 {
@@ -236,11 +237,40 @@ namespace Hfs.Client
         /// </summary>
         /// <param name="vpath"></param>
         /// <returns></returns>
-        public string FileGetInfo(string vpath)
+        public string FileGetInfoXml(string vpath)
         {
             this.mParams.Add(FS.PARAM_ACTION, FS.ACTION_INFO);
             this.mParams.Add(FS.PARAM_VPATH, vpath);
             return Encoding.UTF8.GetString(this.sendRequest(this.mParams));
+        }
+
+        /// <summary>
+        /// Ritorna informazioni su file remoto
+        /// </summary>
+        /// <param name="vpath"></param>
+        /// <returns></returns>
+        public FSFileInfo FileGetInfo(string vpath)
+        {
+            var xml =  this.FileGetInfoXml(vpath);
+
+            // Carica dati da xml
+            using (var ds = new DataSet())
+            {
+                using (StringReader sr = new StringReader(xml))
+                {
+                    ds.ReadXml(sr);
+                }
+
+                using (var tab = ds.Tables["file"])
+                {
+                    foreach (DataRow row in tab.Rows)
+                    {
+                        return this.getFileInfoFromRow(row);
+                    }
+                }
+            }
+
+            throw new FileNotFoundException();
         }
 
 

@@ -10,33 +10,26 @@ namespace Hfs.Core.Test
         {
             Console.WriteLine("Hello World!");
 
-            using (var cli = new HfsClient(@"http://user2:user2@uploadars/hfs?cd=/PraticheSediin"))
+            using (var cli = new HfsClient(@"http://user2:user2@cdpwfias01.casagit.it"))
             {
+                var localfile = @"C:\Users\simone.pelaia\Documents\TEST_DATA\TestPNG.PDF";
+                var remotefile = @"/temp/TestPNG.PDF";
+
+                cli.FileWriteFromBuffer(remotefile, File.ReadAllBytes(localfile));
 
 
-                cli.FileWriteFromBuffer(@"TestPNG.PDF", File.ReadAllBytes(@"C:\Users\simone.pelaia\Desktop\TestPNG.PDF"));
 
-                using (var ms = new MemoryStream(File.ReadAllBytes(@"C:\Users\simone.pelaia\Desktop\TestPNG.PDF")))
-                {
-
-                    cli.FileWriteFromBuffer(@"TestPNG.PDF", ms.ToArray());
-                }
-
-                using (var f = File.OpenRead(@"C:\Users\simone.pelaia\Desktop\TestPNG.PDF"))
-                {
-
-                    cli.FileWriteFromStream(@"TestPNG.PDF", f);
-                }
-
-
-                var b = cli.FileExist(@"TestPNG.PDF");
+                var b = cli.FileExist(remotefile);
 
                 Console.WriteLine($"File exists: {b}");
 
-                var f1 = cli.FileReadToBuffer(@"TestPNG.PDF");
+                var f1 = cli.FileReadToBuffer(remotefile);
 
                 Console.WriteLine($"File read: {f1.Length}");
 
+                var finfo = cli.FileGetInfo(remotefile);
+
+                Console.WriteLine($"File info: {finfo.MimeType}");
 
             }
 

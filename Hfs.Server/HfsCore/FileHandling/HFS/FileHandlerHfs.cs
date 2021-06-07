@@ -56,7 +56,7 @@ namespace Hfs.Server.CODICE.CLASSI.FileHandling
         public override string GetInfoXml()
         {
             Regex rgx = new Regex(@"(<name>.*</name>)", System.Text.RegularExpressions.RegexOptions.Compiled);
-            return rgx.Replace(this.mClient.FileGetInfo(this.VfsResp.VirtualPath), string.Concat("<name>", Utility.HfsCombine(this.VfsResp.Path.Virtual, this.VfsResp.VirtualPath), "</name>"));
+            return rgx.Replace(this.mClient.FileGetInfoXml(this.VfsResp.VirtualPath), string.Concat("<name>", Utility.HfsCombine(this.VfsResp.Path.Virtual, this.VfsResp.VirtualPath), "</name>"));
         }
 
         public override string GetSHA1()

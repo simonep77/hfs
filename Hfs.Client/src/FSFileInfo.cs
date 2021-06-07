@@ -24,7 +24,7 @@ namespace Hfs.Client
 
 
 
-        internal FSFileInfo(string fullname, long len, FileAttributes attr, DateTime ctime, DateTime wtime, IFSPermission permission)
+        internal FSFileInfo(string fullname, long len, FileAttributes attr, DateTime ctime, DateTime wtime, IFSPermission perm)
         {
             this.FullName = fullname;
             this.Name = System.IO.Path.GetFileName(fullname);
@@ -34,7 +34,7 @@ namespace Hfs.Client
             this.Attributes = attr;
             this.CreationTime = ctime;
             this.LastWriteTime = wtime;
-            this.Permission = Permission;
+            this.Permission = perm;
             this.MimeType = MimeHelper.GetMimeFromFilename(this.Name);
         }
     }
