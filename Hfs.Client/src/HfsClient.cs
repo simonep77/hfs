@@ -390,25 +390,21 @@ namespace Hfs.Client
         {
             this.checkStream(stream, true, false, true);
 
-            byte[] buffer = null;
+            //Si sposta all'inizio
+            stream.Seek(0, SeekOrigin.Begin);
+
+            byte[] buffer = new byte[Math.Min(stream.Length, FS.MAX_SINGLE_FILE_SIZE)];
             if (stream.Length <= FS.MAX_SINGLE_FILE_SIZE)
             {
-                //Si sposta all'inizio
-                stream.Seek(0, SeekOrigin.Begin);
                 //Legge su buffer
-                buffer = new byte[stream.Length];
                 stream.Read(buffer, 0, buffer.Length);
                 //Scrive buffer
                 this.mParams.Add(FS.PARAM_ACTION, FS.ACTION_WRITE);
                 this.mParams.Add(FS.PARAM_VPATH, vpath);
                 this.sendRequest(this.mParams, buffer, 0, buffer.Length);
-
-                //Annulla puntatore
-                buffer = null;
             }
             else
             {
-                buffer = new byte[FS.MAX_SINGLE_FILE_SIZE];
                 //Esegue invio a blocchi
                 string sTempName = string.Concat(FS.VPATH_TEMP, "/", Environment.MachineName, "_", Guid.NewGuid().ToString(), Path.GetExtension(vpath));
                 int iDataLen = Convert.ToInt32(stream.Length);
@@ -428,7 +424,8 @@ namespace Hfs.Client
                     this.sendRequest(this.mParams, buffer, 0, iRead);
                 }
 
-
+                //Annulla puntatore
+                buffer = null;
                 //Cancella eventuale file gia' presente
                 this.FileDelete(vpath);
                 //Sposta temporaneo su file finale
