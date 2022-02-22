@@ -9,6 +9,7 @@ using Hfs.Server.CODICE.CLASSI;
 using Hfs.Server.CODICE.CLASSI.FileHandling;
 using Hfs.Server.CODICE.VFS;
 using Hfs.Server.HfsCore.Commands;
+using System.Text;
 
 namespace Hfs.Server.Controllers
 {
@@ -20,7 +21,7 @@ namespace Hfs.Server.Controllers
         public async Task Index()
         {
 
-           
+
 
             try
             {
@@ -42,12 +43,22 @@ namespace Hfs.Server.Controllers
                         HfsException e1 = ex as HfsException;
                         EStatusCode code = e1 == null ? EStatusCode.GenericError : e1.StatusCode;
 
-                        ICommand cmdErr = new CommandError() { Code = code, Msg = ex.Message, Content = Utility.GetHelpHtml() };
+                        var sbMessage = new StringBuilder();
+
+                        while (ex != null)
+                        {
+                            sbMessage.Append(ex.Message);
+                            sbMessage.Append(". ");
+                            ex = ex.InnerException;
+                        }
+
+                        ICommand cmdErr = new CommandError() { Code = code, Msg = sbMessage.ToString(), Content = Utility.GetHelpHtml() };
                         cmdErr.Init(this, cmd.Request);
                         await cmdErr.Execute();
 
                         //Logga eccezione
-                        this.logDump(this.HttpContext, "Richiesta terminata con ERRORE", (int)code, ex.Message, cmd.Request, cmd.Response);
+                        this.logDump(this.HttpContext, "Richiesta terminata con ERRORE", (int)code, sbMessage.ToString(), cmd.Request, cmd.Response);
+
                     }
                     finally
                     {
@@ -125,7 +136,7 @@ namespace Hfs.Server.Controllers
 
         }
 
-        
+
 
 
     }

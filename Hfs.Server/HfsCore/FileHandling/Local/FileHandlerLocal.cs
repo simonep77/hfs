@@ -19,14 +19,21 @@ namespace Hfs.Server.CODICE.CLASSI.FileHandling
         public FileHandlerLocal(HfsResponseVfs resp)
             :base(resp)
         {
-            //Se trattasi di una share SMB e sono presenti credenziali specifiche 
-            if (resp.Path.IsUncWithCredentials)
-            {
-                this.mNetConn = new NetworkConnection(resp.PhysicalPath, 
-                    new NetworkCredential(resp.Path.Params[Const.SMB_File_Handling.PATH_PARAM_USER], resp.Path.Params[Const.SMB_File_Handling.PATH_PARAM_PASS]));
-                
-            }
+            this.handleUncWithCredentials();
             this.mFileInfo = new FileInfo(resp.PhysicalPath);
+        }
+
+        private void handleUncWithCredentials()
+        {
+            //Se trattasi di una share SMB e sono presenti credenziali specifiche 
+            if (this.VfsResp.Path.IsUncWithCredentials)
+            {
+                //Attenzione: il collegamento va alla share principale. Necessario fare parsing: utilizzato getPathRoot
+
+                this.mNetConn = new NetworkConnection(Path.GetPathRoot(this.VfsResp.PhysicalPath),
+                    new NetworkCredential(this.VfsResp.Path.Params[Const.SMB_File_Handling.PATH_PARAM_USER], this.VfsResp.Path.Params[Const.SMB_File_Handling.PATH_PARAM_PASS]));
+
+            }
         }
 
         public override string FullName
