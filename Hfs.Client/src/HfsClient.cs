@@ -831,7 +831,7 @@ namespace Hfs.Client
             try
             {
                 this.mWeb.Headers.Clear();
-                this.mWeb.Headers.Add("User-Agent", "HFS Client.NET");
+                //this.mWeb.Headers["User-Agent"] = @"HFS Client.NET";
                 //Imposta user e pass se non presenti
                 if (!string.IsNullOrEmpty(this.User))
                 {
@@ -916,7 +916,7 @@ namespace Hfs.Client
             {
                 var wr = WebRequest.CreateHttp(this.Url);
                 
-                wr.Headers.Add("User-Agent", "HFS Client.NET");
+                //wr.Headers["User-Agent"] = "HFS Client.NET";
                 //Imposta user e pass se non presenti
                 if (!string.IsNullOrEmpty(this.User))
                 {
