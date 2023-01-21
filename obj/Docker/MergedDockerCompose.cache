@@ -1,0 +1,18 @@
+name: dockercompose6255498991903311713
+services:
+  hfs.server.core:
+    build:
+      context: C:\Users\simone.pelaia\source\repos\simonep77\hfs
+      dockerfile: Hfs.Server.Core/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    image: hfsservercore
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 80
+      protocol: tcp
+networks:
+  default:
+    name: dockercompose6255498991903311713_default

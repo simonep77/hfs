@@ -6,7 +6,6 @@ C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\bin\Debug\netcor
 C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\bin\Debug\netcoreapp3.1\Hfs.Core.Test.pdb
 C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\bin\Debug\netcoreapp3.1\Hfs.Client.dll
 C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\bin\Debug\netcoreapp3.1\Hfs.Client.pdb
-C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\obj\Debug\netcoreapp3.1\Hfs.Core.Test.csprojAssemblyReference.cache
 C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\obj\Debug\netcoreapp3.1\Hfs.Core.Test.AssemblyInfoInputs.cache
 C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\obj\Debug\netcoreapp3.1\Hfs.Core.Test.AssemblyInfo.cs
 C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\obj\Debug\netcoreapp3.1\Hfs.Core.Test.csproj.CoreCompileInputs.cache
@@ -14,3 +13,5 @@ C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\obj\Debug\netcor
 C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\obj\Debug\netcoreapp3.1\Hfs.Core.Test.dll
 C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\obj\Debug\netcoreapp3.1\Hfs.Core.Test.pdb
 C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\obj\Debug\netcoreapp3.1\Hfs.Core.Test.genruntimeconfig.cache
+C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\obj\Debug\netcoreapp3.1\Hfs.Core.Test.csproj.AssemblyReference.cache
+C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\obj\Debug\netcoreapp3.1\Hfs.Core.Test.GeneratedMSBuildEditorConfig.editorconfig

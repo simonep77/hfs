@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "h8N4d8wHMJCCtRRDSCtxHL7C+c2wY53Ku1Sxaf4iz74iGVqTrIwNuisL3D+tUfscSWgcVnla9TZKTCdyeRodrw==",
+  "dgSpecHash": "flXKsWt1WGC50LBk68IKVV/GgLP3Yg41XPtITY3CApT3ork8QQebD5Nc8aSqao7jybOnK6qteTveqxI1oVHsgg==",
   "success": true,
   "projectFilePath": "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Core.Test\\Hfs.Core.Test.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\simone.pelaia\\.nuget\\packages\\hfs.client\\2.0.10\\hfs.client.2.0.10.nupkg.sha512"
+  ],
   "logs": []
 }

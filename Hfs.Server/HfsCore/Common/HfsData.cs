@@ -7,7 +7,6 @@ namespace Hfs.Server.CODICE.CLASSI
     /// </summary>
     public class HfsData
     {
-
         /// <summary>
         /// Directory base di lavoro hfs
         /// </summary>

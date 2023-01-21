@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  hfs.server.core:
+    image: ${DOCKER_REGISTRY-}hfsservercore
+    build:
+      context: .
+      dockerfile: Hfs.Server.Core/Dockerfile
