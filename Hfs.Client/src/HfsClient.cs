@@ -757,6 +757,15 @@ namespace Hfs.Client
         }
 
 
+        /// <summary>
+        /// Resetta lo stato del client dall'ultima esecuzione (ultimo codice/messaggio di esecuzione)
+        /// </summary>
+        public void ResetState()
+        {
+            this.setResponse(0, string.Empty);
+        }
+
+
         #endregion
 
 
@@ -1091,6 +1100,8 @@ namespace Hfs.Client
         /// <param name="checkExist"></param>
         private void checkInputFile(string localFile, bool checkExist)
         {
+            this.ResetState();
+
             //Controllo file
             if (localFile == null || string.IsNullOrEmpty(localFile.Trim()))
             {
@@ -1117,6 +1128,8 @@ namespace Hfs.Client
         /// <param name="buffer"></param>
         private void checkBuffer(byte[] buffer)
         {
+            this.ResetState();
+
             //Controllo null
             if (buffer == null)
             {
@@ -1141,6 +1154,8 @@ namespace Hfs.Client
         /// <param name="stream"></param>
         private void checkStream(Stream stream, bool checkRead, bool checkWrite, bool checkSeek)
         {
+            this.ResetState();
+
             //Controllo stream
             if (stream == null)
             {
@@ -1178,6 +1193,7 @@ namespace Hfs.Client
 
         public void Dispose()
         {
+            this.mWeb.Dispose();
             this.mParams.Clear();
         }
 
