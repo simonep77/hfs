@@ -4,4 +4,9 @@
     <ProjectView>ShowAllFiles</ProjectView>
     <_LastSelectedProfileId>C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Client\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="src\Utility\WebClientEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>
