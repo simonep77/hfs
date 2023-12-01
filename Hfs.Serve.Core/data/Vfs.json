@@ -1,0 +1,29 @@
+{
+
+  "users": [
+    {
+      "name": "simone",
+      "pass": "test"
+    }
+  ],
+
+  "paths": [
+    {
+      "type": "local",
+      "virtualpath": "/test",
+      "physicalpath": "/data/test",
+      "authorizations": [
+        {
+          "name": "simone",
+          "access": "LRWD"
+        }
+      ],
+      "parameters": [
+        {
+          "key": "aaa",
+          "value": "bbbb"
+        }
+      ]
+    }
+  ]
+}

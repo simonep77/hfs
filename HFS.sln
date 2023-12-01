@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hfs.Core.Test", "Hfs.Core.T
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{3999B1D5-B423-4E9B-8D12-575CD6D2BACC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hfs.Serve.Core", "Hfs.Serve.Core\Hfs.Serve.Core.csproj", "{1A0C2FED-0E65-4E9A-AED3-7ED5B8B45717}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3999B1D5-B423-4E9B-8D12-575CD6D2BACC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3999B1D5-B423-4E9B-8D12-575CD6D2BACC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3999B1D5-B423-4E9B-8D12-575CD6D2BACC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A0C2FED-0E65-4E9A-AED3-7ED5B8B45717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A0C2FED-0E65-4E9A-AED3-7ED5B8B45717}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A0C2FED-0E65-4E9A-AED3-7ED5B8B45717}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A0C2FED-0E65-4E9A-AED3-7ED5B8B45717}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

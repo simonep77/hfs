@@ -1,0 +1,6 @@
+@Hfs.Serve.Core_HostAddress = http://localhost:5020
+
+GET {{Hfs.Serve.Core_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
