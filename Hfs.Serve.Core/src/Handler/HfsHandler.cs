@@ -2,24 +2,8 @@
 using Hfs.Server.HfsCore.Commands;
 using System.Text;
 
-namespace Hfs.Serve.Core.src.Handler
+namespace Hfs.Serve.Core.Handler
 {
-
-    //public class HfsParams
-    //{
-    //    public string Hfs_User { get; set; }
-    //    public string Hfs_Pass { get; set; }
-    //    public string Hfs_Action { get; set; }
-    //    public string Hfs_Vpath { get; set; }
-    //    public string Hfs_VpathDest { get; set; }
-    //    public string Hfs_Link { get; set; }
-    //    public string Hfs_Block { get; set; }
-    //    public string Hfs_Pattern { get; set; }
-    //    public string Hfs_MailTo { get; set; }
-    //    public string Hfs_MailFrom { get; set; }
-    //    public string Hfs_MailSubj { get; set; }
-    //}
-
     public class HfsHandler
     {
         /// <summary>
