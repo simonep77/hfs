@@ -10,3 +10,4 @@ packages
 .vs
 /Hfs.Server/App_Data
 /Hfs.Server/Hfs.Server.csproj.user
+/Hfs.Serve.Core/data/log
