@@ -1,5 +1,6 @@
 ﻿using Hfs.Server.Core.Vfs;
 using System.Diagnostics;
+using System.Text;
 
 namespace Hfs.Server.Core.Common
 {
@@ -11,6 +12,7 @@ namespace Hfs.Server.Core.Common
 
         public static IWebHostEnvironment? HostingEnv { get; set; }
         public static WebApplication? WebApp { get; set; }
+        public static ILogger? WebLogger { get; set; }
 
         public static string AdminPass = string.Empty;
         public static int LogKeepDays = 30;
@@ -87,6 +89,93 @@ namespace Hfs.Server.Core.Common
             internalInit();
         }
 
+        public static void WriteLog(string text, StringBuilder sb)
+        {
+            sb.AppendLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} - T{Thread.CurrentThread.ManagedThreadId:00000} - " + text);
+        }
+
+        public static void WriteLog(string text)
+        {
+            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} - T{Thread.CurrentThread.ManagedThreadId:00000} - " + text);
+        }
+
+        public static void WriteException(Exception e)
+        {
+            StringBuilder sb = new StringBuilder(1500);
+            //Scrive
+            Exception oException;
+            int iIndentEx = 0;
+            int iInnerCount = 0;
+            string sSep = string.Empty.PadRight(210, '=');
+            var sMsgBase = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} - T{Thread.CurrentThread.ManagedThreadId:00000} - ";
+            sb.Append(sMsgBase);
+            sb.AppendLine(sSep);
+
+            oException = e;
+
+            while (oException != null)
+            {
+                string sIndent = string.Empty.PadRight(iIndentEx);
+
+                sb.Append(sMsgBase);
+                sb.Append(sIndent);
+                if (iIndentEx == 0)
+                {
+                    sb.AppendLine("ECCEZIONE!");
+                }
+                else
+                {
+                    sb.Append(iInnerCount.ToString("D2"));
+                    sb.AppendLine(") Inner");
+                }
+
+                sb.Append(sMsgBase);
+                sb.Append(sIndent);
+                sb.Append("  * Tipo     : ");
+                sb.AppendLine(oException.GetType().Name);
+
+                sb.Append(sMsgBase);
+                sb.Append(sIndent);
+                sb.Append("  * Messaggio: ");
+                sb.AppendLine(oException.Message);
+
+                sb.Append(sMsgBase);
+                sb.Append(sIndent);
+                sb.Append("  * Source   : ");
+                sb.AppendLine(oException.Source);
+
+                sb.Append(sMsgBase);
+                sb.Append(sIndent);
+                sb.Append("  * Classe   : ");
+                sb.AppendLine(oException.TargetSite.DeclaringType.Name);
+
+                sb.Append(sMsgBase);
+                sb.Append(sIndent);
+                sb.Append("  * Metodo   : ");
+                sb.AppendLine(oException.TargetSite.Name);
+
+                sb.Append(sMsgBase);
+                sb.Append(sIndent);
+                sb.Append("  * Namespace: ");
+                sb.AppendLine(oException.TargetSite.DeclaringType.Namespace);
+
+                sb.Append(sMsgBase);
+                sb.Append(sIndent);
+                sb.Append("  * Stack    : ");
+                sb.AppendLine(oException.StackTrace);
+
+                //Successiva
+                iInnerCount++;
+                oException = oException.InnerException;
+                iIndentEx += 4;
+            }
+
+            sb.Append(sMsgBase);
+            sb.AppendLine(sSep);
+
+            Console.Write(sb.ToString());
+        }
+
         private static void internalInit()
         {
             Directory.CreateDirectory(HfsData.LogDir);
@@ -97,11 +186,11 @@ namespace Hfs.Server.Core.Common
             HfsData.Logger.Start();
 
             //Scrive log base
-            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, "");
-            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, Const.LOG_SEPARATOR);
-            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, Const.LOG_START_LINE, ApplicationInfo.FileVersion);
-            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, Const.LOG_SEPARATOR);
-            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, "");
+            WriteLog("");
+            WriteLog(Const.LOG_SEPARATOR);
+            WriteLog($"HTTP File Server v{ApplicationInfo.FileVersion} - avvio applicazione");
+            WriteLog(Const.LOG_SEPARATOR);
+            WriteLog("");
 
             try
             {

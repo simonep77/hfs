@@ -12,7 +12,7 @@ namespace Hfs.Server.Core.Common
         public static void Start()
         {
             //File Temporanei
-            new Thread(new ParameterizedThreadStart(handleTempFiles)).Start(null); 
+            new Thread(new ParameterizedThreadStart(handleTempFiles)).Start(null);
             //File di log
             new Thread(new ParameterizedThreadStart(handleLogFiles)).Start(null);
         }
@@ -23,7 +23,7 @@ namespace Hfs.Server.Core.Common
         private static void handleTempFiles(object arg)
         {
             //Log avvio
-            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, "Avvio pulizia temporanei..");
+            HfsData.WriteLog("Avvio pulizia temporanei..");
 
             //Pulisce
             DateTime dtNow = DateTime.Now;
@@ -31,7 +31,7 @@ namespace Hfs.Server.Core.Common
             Utility.CleanDirectory(HfsData.TempDir, @"*", dtExpired, true);
 
             //Log fine
-            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, "Fine pulizia temporanei");
+            HfsData.WriteLog("Fine pulizia temporanei");
         }
 
         /// <summary>
@@ -41,17 +41,17 @@ namespace Hfs.Server.Core.Common
         private static void handleLogFiles(object arg)
         {
             //Log avvio
-            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, "Avvio pulizia log..");
+            HfsData.WriteLog("Avvio pulizia log..");
 
             //Pulisce
             DateTime dtNow = DateTime.Now;
             DateTime dtExpired = new DateTime(dtNow.Year, dtNow.Month, dtNow.Day, 23, 59, 59).AddDays(-HfsData.LogKeepDays);
-            Utility.CleanDirectory(HfsData.LogDir ,Const.LOG_PATTERN, dtExpired, false);
+            Utility.CleanDirectory(HfsData.LogDir, Const.LOG_PATTERN, dtExpired, false);
 
             //Log fine
-            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, "Fine pulizia log");
+            HfsData.WriteLog("Fine pulizia log");
         }
 
-        
+
     }
 }

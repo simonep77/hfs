@@ -76,7 +76,7 @@ namespace Hfs.Server.Core.Vfs
         public void Load()
         {
             //Log avvio
-            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, "Avvio caricamento vfs..");
+            HfsData.WriteLog("Avvio caricamento vfs..");
             //Blocca altri
             this._lock.EnterWriteLock();
             try
@@ -136,8 +136,8 @@ namespace Hfs.Server.Core.Vfs
                         }
                         catch (Exception ex)
                         {
-                            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, $"Attenzione! impossibile creare drectory fisica {oPath.Physical} per vpath {oPath.Virtual}");
-                            HfsData.Logger.WriteMessage(ELogType.HfsGlobal, ex.Message);
+                            HfsData.WriteLog($"Attenzione! impossibile creare drectory fisica {oPath.Physical} per vpath {oPath.Virtual}");
+                            HfsData.WriteLog(ex.Message);
                         }
                     }
                     //Aggiunge autorizzazioni
@@ -167,7 +167,7 @@ namespace Hfs.Server.Core.Vfs
                 //Sblocca altri
                 this._lock.ExitWriteLock();
                 //log fine
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, "Fine caricamento vfs");
+                HfsData.WriteLog("Fine caricamento vfs");
             }
 
         }

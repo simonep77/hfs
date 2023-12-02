@@ -1,9 +1,15 @@
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-#USER app
+
 WORKDIR /app
-EXPOSE 80
+#RUN groupadd -r appuser -g 433 && \
+#    useradd -u 431 -r -g appuser -s /sbin/nologin -c "Docker image user" appuser
+
+RUN mkdir /app/data && chmod -R 1777 /app/data
+
+
+EXPOSE 8080
 #Volume per configurazione esterna
 VOLUME /app/data 
 
@@ -24,5 +30,5 @@ RUN dotnet publish "./Hfs.Serve.Core.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-#run chown -R app /app/data
+USER appuser
 ENTRYPOINT ["dotnet", "Hfs.Serve.Core.dll"]

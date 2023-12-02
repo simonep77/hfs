@@ -59,9 +59,9 @@ namespace Hfs.Serve.Core.Handler
             }
             catch (Exception ex)
             {
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, $"Errore generato al di fuori del contesto command: {ex.Message}");
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, ex.StackTrace ?? string.Empty);
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, Const.LOG_SEPARATOR);
+                HfsData.WriteLog($"Errore generato al di fuori del contesto command: {ex.Message}");
+                HfsData.WriteException(ex);
+                HfsData.WriteLog(Const.LOG_SEPARATOR);
 
                 ICommand cmdErr = new CommandError() { Code = EStatusCode.GenericError, Msg = ex.Message, Content = @"Errore generato al di fuori del contesto command" };
                 cmdErr.Init(context, new HfsRequest());

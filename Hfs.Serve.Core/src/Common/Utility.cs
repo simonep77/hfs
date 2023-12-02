@@ -546,8 +546,8 @@ namespace Hfs.Server.Core.Common
                     }
                     catch (Exception e)
                     {
-                        HfsData.Logger.WriteMessage(ELogType.HfsGlobal, "Errore durante la pulizia della directory {0}", directory);
-                        HfsData.Logger.WriteException(ELogType.HfsGlobal, e);
+                        HfsData.WriteLog($"Errore durante la pulizia della directory {directory}");
+                        HfsData.WriteException(e);
                     }
 
                 }
@@ -594,31 +594,25 @@ namespace Hfs.Server.Core.Common
         public static void LogDump(HttpContext context, string title, int code, string msg, HfsRequest req, HfsResponseVfs resp)
         {
             //Logga eccezione
-            HfsData.Logger.BeginWrite(ELogType.HfsGlobal);
-            try
-            {
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, title);
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, @" RequestID: {0}", req.ReqId);
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, @" Parametri HFS-HEADER");
+            var sb = new StringBuilder();
+            HfsData.WriteLog(title, sb);
+            HfsData.WriteLog($" RequestID: {req.ReqId}", sb);
+            HfsData.WriteLog(@" Parametri HFS-HEADER", sb);
 
-                context.Request.Headers.Where(x => x.Key.StartsWith(Const.QS_HEADER_PREFIX)).ToList().ForEach(x => HfsData.Logger.WriteMessage(ELogType.HfsGlobal, $"   - {x.Key}: '{x.Value}'"));
+            context.Request.Headers.Where(x => x.Key.StartsWith(Const.QS_HEADER_PREFIX)).ToList().ForEach(x => HfsData.WriteLog($"   - {x.Key}: '{x.Value}'", sb));
 
-                context.Request.Query.Where(x => x.Key.StartsWith(Const.QS_HEADER_PREFIX)).ToList().ForEach(x => HfsData.Logger.WriteMessage(ELogType.HfsGlobal, $"   - {x.Key}: '{x.Value}'"));
+            context.Request.Query.Where(x => x.Key.StartsWith(Const.QS_HEADER_PREFIX)).ToList().ForEach(x => HfsData.WriteLog($"   - {x.Key}: '{x.Value}'", sb));
 
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, @" Parametri AMBIENTE");
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, $"   - file/dir: '{resp?.PhysicalPath}'");
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, $"   - clientIp: {context.Connection.RemoteIpAddress}");
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, $"   - clientAgent: {context.Request.Headers["User-Agent"]}");
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, $"   - datalen: '{context.Request.ContentLength}'");
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, @" Parametri RISPOSTA");
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, $"   - code: {code}", code.ToString("D"));
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, @"   - msg: " + msg);
-                HfsData.Logger.WriteMessage(ELogType.HfsGlobal, Const.LOG_SEPARATOR);
-            }
-            finally
-            {
-                HfsData.Logger.EndWrite(ELogType.HfsGlobal);
-            }
+            HfsData.WriteLog(@" Parametri AMBIENTE", sb);
+            HfsData.WriteLog($"   - file/dir: '{resp?.PhysicalPath}'", sb);
+            HfsData.WriteLog($"   - clientIp: {context.Connection.RemoteIpAddress}", sb);
+            HfsData.WriteLog($"   - clientAgent: {context.Request.Headers["User-Agent"]}", sb);
+            HfsData.WriteLog($"   - datalen: '{context.Request.ContentLength}'", sb);
+            HfsData.WriteLog(@" Parametri RISPOSTA", sb);
+            HfsData.WriteLog($"   - code: {code}", sb);
+            HfsData.WriteLog(@"   - msg: " + msg, sb);
+            HfsData.WriteLog(Const.LOG_SEPARATOR, sb);
+            HfsData.WriteLog(sb.ToString());
 
         }
 
