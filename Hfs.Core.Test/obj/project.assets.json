@@ -27,19 +27,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\simone.pelaia\\.nuget\\packages\\": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Core.Test\\Hfs.Core.Test.csproj",
+      "projectUniqueName": "D:\\SVILUPPO\\hfs\\simonep77\\hfs\\Hfs.Core.Test\\Hfs.Core.Test.csproj",
       "projectName": "Hfs.Core.Test",
-      "projectPath": "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Core.Test\\Hfs.Core.Test.csproj",
-      "packagesPath": "C:\\Users\\simone.pelaia\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Core.Test\\obj\\",
+      "projectPath": "D:\\SVILUPPO\\hfs\\simonep77\\hfs\\Hfs.Core.Test\\Hfs.Core.Test.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "D:\\SVILUPPO\\hfs\\simonep77\\hfs\\Hfs.Core.Test\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\simone.pelaia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -47,15 +52,15 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://proget.casagit.it:8443/nuget/casagit-packages/v3/index.json": {}
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Client\\Hfs.Client.csproj": {
-              "projectPath": "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Client\\Hfs.Client.csproj"
+            "D:\\SVILUPPO\\hfs\\simonep77\\hfs\\Hfs.Client\\Hfs.Client.csproj": {
+              "projectPath": "D:\\SVILUPPO\\hfs\\simonep77\\hfs\\Hfs.Client\\Hfs.Client.csproj"
             }
           }
         }
@@ -80,6 +85,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.1.10, 3.1.10]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[3.1.32, 3.1.32]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[3.1.0, 3.1.0]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[3.1.0, 3.1.0]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
