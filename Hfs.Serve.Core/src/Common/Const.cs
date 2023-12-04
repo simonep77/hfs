@@ -44,17 +44,17 @@ namespace Hfs.Server.Core.Common
          */
         public const string QS_HEADER_PREFIX = @"hfs-";
         public const string QS_LINK = $"{QS_HEADER_PREFIX}link";
-        public const string QS_USER = @"hfs-user";
-        public const string QS_PASS = @"hfs-pass";
-        public const string QS_VPATH = @"hfs-vpath";
-        public const string QS_VPATH_DEST = @"hfs-vpathdest";
-        public const string QS_VPATH_PATTERN = @"hfs-pattern";
-        public const string QS_ACTION = @"hfs-action";
-        public const string QS_MAIL_TO = @"hfs-mailto";
-        public const string QS_MAIL_FROM = @"hfs-mailfrom";
-        public const string QS_MAIL_SUBJ = @"hfs-mailsubj";
-        public const string QS_MAIL_BODY = @"hfs-mailbody";
-        public const string QS_ATTR = @"hfs-attr";
+        public const string QS_USER = $"{QS_HEADER_PREFIX}user";
+        public const string QS_PASS = $"{QS_HEADER_PREFIX}pass";
+        public const string QS_VPATH = $"{QS_HEADER_PREFIX}vpath";
+        public const string QS_VPATH_DEST = $"{QS_HEADER_PREFIX}vpathdest";
+        public const string QS_VPATH_PATTERN = $"{QS_HEADER_PREFIX}pattern";
+        public const string QS_ACTION = $"{QS_HEADER_PREFIX}action";
+        public const string QS_MAIL_TO = $"{QS_HEADER_PREFIX}mailto";
+        public const string QS_MAIL_FROM = $"{QS_HEADER_PREFIX}mailfrom";
+        public const string QS_MAIL_SUBJ = $"{QS_HEADER_PREFIX}mailsubj";
+        public const string QS_MAIL_BODY = $"{QS_HEADER_PREFIX}mailbody";
+        public const string QS_ATTR = $"{QS_HEADER_PREFIX}attr";
 
         /*
          Costanti Response
@@ -89,12 +89,12 @@ namespace Hfs.Server.Core.Common
         /// </summary>
         public static class SFTP_File_Handling
         {
-            public const string PATH_PARAM_HOST = @"SFTP_HOST";
-            public const string PATH_PARAM_PORT = @"SFTP_PORT";
-            public const string PATH_PARAM_USER = @"SFTP_USER";
-            public const string PATH_PARAM_PASS = @"SFTP_PASS";
-            public const string PATH_PARAM_CURRDIR = @"SFTP_CURRDIR";
-            public const string PATH_PARAM_KEYBASE64 = @"SFTP_KEYBASE64";
+            public const string PATH_PARAM_HOST = @"HOST";
+            public const string PATH_PARAM_PORT = @"PORT";
+            public const string PATH_PARAM_USER = @"USER";
+            public const string PATH_PARAM_PASS = @"PASS";
+            public const string PATH_PARAM_CURRDIR = @"CURRDIR";
+            public const string PATH_PARAM_KEYBASE64 = @"KEYBASE64";
         }
 
         /// <summary>
@@ -102,14 +102,13 @@ namespace Hfs.Server.Core.Common
         /// </summary>
         public static class FTP_File_Handling
         {
-            public const string PATH_PARAM_HOST = @"FTP_HOST";
-            public const string PATH_PARAM_PORT = @"FTP_PORT";
-            public const string PATH_PARAM_USER = @"FTP_USER";
-            public const string PATH_PARAM_PASS = @"FTP_PASS";
-            public const string PATH_PARAM_CURRDIR = @"FTP_CURRDIR";
-            public const string PATH_PARAM_PASSIVE = @"FTP_PASSIVE";
+            public const string PATH_PARAM_HOST = @"HOST";
+            public const string PATH_PARAM_PORT = @"PORT";
+            public const string PATH_PARAM_USER = @"USER";
+            public const string PATH_PARAM_PASS = @"PASS";
+            public const string PATH_PARAM_CURRDIR = @"CURRDIR";
+            public const string PATH_PARAM_PASSIVE = @"PASSIVE";
 
         }
-
     }
 }

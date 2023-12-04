@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using Hfs.Server.Core.Common;
+using System.Diagnostics;
+using System.Text;
 
 namespace Hfs.Server.Core.Vfs
 {
@@ -26,8 +28,8 @@ namespace Hfs.Server.Core.Vfs
         public string Physical
         {
             get { return this.mPhysical; }
-            set 
-            { 
+            set
+            {
                 this.mPhysical = (value != null) ? value.Trim() : string.Empty;
             }
         }
@@ -50,18 +52,6 @@ namespace Hfs.Server.Core.Vfs
             get { return this.mPathType == EVfsPathType.Local; }
         }
 
-
-        /// <summary>
-        /// Indica se network share remota
-        /// </summary>
-        public bool IsUnc
-        {
-            get 
-            {
-                return this.IsLocal
-                  && this.Physical.StartsWith(@"\\", StringComparison.Ordinal);  
-            }
-        }
 
 
         /// <summary>
@@ -140,7 +130,7 @@ namespace Hfs.Server.Core.Vfs
                 return;
 
             //Accesso non consentito
-            throw new HfsException(EStatusCode.NotAllowed ,$"Utente '{user.Name}' non autorizzato all'operazione '{action}' su '{this.Virtual}'");
+            throw new HfsException(EStatusCode.NotAllowed, $"Utente '{user.Name}' non autorizzato all'operazione '{action}' su '{this.Virtual}'");
         }
 
         /// <summary>
@@ -220,6 +210,7 @@ namespace Hfs.Server.Core.Vfs
                 this.UserAuth.Remove(user.Name);
             }
         }
+
 
     }
 }

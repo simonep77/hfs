@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Text;
 using Hfs.Server.Core.Common;
 
 namespace Hfs.Server.Core.FileHandling

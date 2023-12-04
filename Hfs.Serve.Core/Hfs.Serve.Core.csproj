@@ -21,9 +21,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="src\Commands\FileDir\CommandInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Folder Include="data\log\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="data\vfs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 
 </Project>

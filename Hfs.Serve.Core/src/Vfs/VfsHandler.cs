@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using Hfs.Server.Core.Common;
 using System.Text.Json;
+using System.Diagnostics;
 
 namespace Hfs.Server.Core.Vfs
 {
@@ -11,7 +12,7 @@ namespace Hfs.Server.Core.Vfs
     /// </summary>
     public class VfsHandler
     {
-        private ReaderWriterLockSlim _lock =  new ReaderWriterLockSlim();
+        private ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
         private Dictionary<string, VfsUser> Users = new Dictionary<string, VfsUser>(10);
         private Dictionary<string, VfsPath> Paths = new Dictionary<string, VfsPath>(10);
@@ -130,8 +131,17 @@ namespace Hfs.Server.Core.Vfs
                     };
                     //Aggiunge Admin
                     oPath.AddAccess(oAdminAccess);
+
+                    //Unc non ammessi
+                    if (path.physicalpath.StartsWith(@"//", StringComparison.Ordinal))
+                    {
+                        HfsData.WriteLog($"Percorso unc {oPath.Physical} non supportato. Montarlo esternamente");
+                        continue;
+                    }
+
+
                     //Crea la directory se non esiste
-                    if (oPath.IsLocal && !oPath.IsUnc)
+                    if (oPath.IsLocal)
                     {
                         try
                         {
@@ -139,7 +149,7 @@ namespace Hfs.Server.Core.Vfs
                         }
                         catch (Exception ex)
                         {
-                            HfsData.WriteLog($"Attenzione! impossibile creare drectory fisica {oPath.Physical} per vpath {oPath.Virtual}");
+                            HfsData.WriteLog($"Attenzione! impossibile creare directory fisica {oPath.Physical} per vpath {oPath.Virtual}");
                             HfsData.WriteLog(ex.Message);
                         }
                     }

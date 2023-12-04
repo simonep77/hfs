@@ -17,7 +17,6 @@ namespace Hfs.Server.Core.Common
         public static ILogger? WebLogger { get; set; }
 
         public static string AdminPass = string.Empty;
-        public static int LogKeepDays = 30;
         public static int TempFilesKeepDays = 30;
         public static bool LogAccess = false;
         public static bool AllowQueryStringParams = true;
@@ -47,11 +46,6 @@ namespace Hfs.Server.Core.Common
         public static string TempDirSharedFiles = string.Empty;
 
 
-        /// <summary>
-        /// Directory di log
-        /// </summary>
-        public static string LogDir = string.Empty;
-
         public static string VfsFilePath = string.Empty;
 
 
@@ -73,21 +67,19 @@ namespace Hfs.Server.Core.Common
             if (WebApp is null || HostingEnv is null)
                 throw new ArgumentException($"{nameof(WebApp)} e {nameof(HostingEnv)} devono essere valorizzati");
 
-            VfsFilePath = string.IsNullOrWhiteSpace(WebApp?.Configuration["Hfs:VfsFilePath"]) ? Path.Combine(HostingEnv?.ContentRootPath, "data", "vfs.json") : WebApp?.Configuration["Hfs:VfsFilePath"];
-            TempDir = string.IsNullOrWhiteSpace(WebApp.Configuration["Hfs:TempDirectory"]) ? Path.Combine(HfsData.HostingEnv.ContentRootPath, "data", "temp") : WebApp.Configuration["Hfs:TempDirectory"];
-            LogKeepDays = Convert.ToInt32(WebApp.Configuration["Hfs:LogKeepDays"] ?? "30");
-            TempFilesKeepDays = Convert.ToInt32(WebApp.Configuration["Hfs:TempFilesKeepDays"] ?? "30");
-            LogAccess = Convert.ToBoolean(WebApp.Configuration["Hfs:LogAccess"] ?? "true");
-            AllowQueryStringParams = Convert.ToBoolean(WebApp.Configuration["Hfs:AllowQueryStringParams"] ?? "true");
-            Debug = Convert.ToBoolean(WebApp.Configuration["Hfs:Debug"] ?? "false");
-            AdminPass = WebApp.Configuration["Hfs:AdminPass"] ?? "admin";
+            VfsFilePath = Environment.GetEnvironmentVariable("VfsFilePath") ?? WebApp.Configuration["Hfs:TempDirectory"] ?? Path.Combine(HfsData.HostingEnv.ContentRootPath, "data", "vfs.json");
+            TempDir = Environment.GetEnvironmentVariable("TempDirectory") ?? WebApp.Configuration["Hfs:TempDirectory"] ?? Path.Combine(HfsData.HostingEnv.ContentRootPath, "data", "temp");
+            TempFilesKeepDays = Convert.ToInt32(Environment.GetEnvironmentVariable("TempFilesKeepDays") ?? WebApp.Configuration["Hfs:TempFilesKeepDays"] ?? "30");
+            LogAccess = Convert.ToBoolean(Environment.GetEnvironmentVariable("LogAccess") ?? WebApp.Configuration["Hfs:LogAccess"] ?? "true");
+            AllowQueryStringParams = Convert.ToBoolean(Environment.GetEnvironmentVariable("AllowQueryStringParams") ?? WebApp.Configuration["Hfs:AllowQueryStringParams"] ?? "true");
+            Debug = Convert.ToBoolean(Environment.GetEnvironmentVariable("Debug") ?? WebApp.Configuration["Hfs:TempDireDebugctory"] ?? "false");
+            AdminPass = Environment.GetEnvironmentVariable("AdminPass") ?? WebApp.Configuration["Hfs:AdminPass"] ?? "admin";
 
             internalInit();
         }
 
         #region Console Log Async
         private static readonly object _LogLock = new object();
-        private static readonly string _LogSep = string.Empty.PadRight(210, '=');
         private static StringBuilder _logSb = new StringBuilder(1024 * 1024);
 
         /// <summary>
@@ -134,7 +126,7 @@ namespace Hfs.Server.Core.Common
             int iIndentEx = 0;
             int iInnerCount = 0;
 
-            AppendLog(_LogSep, sb);
+            AppendLog(Const.LOG_SEPARATOR, sb);
 
             oException = e;
 
@@ -161,7 +153,7 @@ namespace Hfs.Server.Core.Common
                 iIndentEx += 4;
             }
 
-            AppendLog(_LogSep, sb);
+            AppendLog(Const.LOG_SEPARATOR, sb);
 
             //Accoda a log senza format
             WriteLog(sb);

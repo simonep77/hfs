@@ -3,11 +3,11 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
 WORKDIR /app
-#RUN groupadd -r appuser -g 433 && \
-#    useradd -u 431 -r -g appuser -s /sbin/nologin -c "Docker image user" appuser
 
-RUN mkdir /app/data && chmod -R 1777 /app/data
+RUN groupadd -r appuser -g 433 && \
+    useradd -u 431 -r -g appuser -s /sbin/nologin -c "Docker image user" appuser
 
+RUN mkdir /app/data
 
 EXPOSE 8080
 #Volume per configurazione esterna
@@ -30,5 +30,6 @@ RUN dotnet publish "./Hfs.Serve.Core.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN chmod -R 1777 /app/data
 USER appuser
 ENTRYPOINT ["dotnet", "Hfs.Serve.Core.dll"]
