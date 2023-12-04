@@ -19,11 +19,58 @@
         }
       ],
       "parameters": [
+        //Parametri esempio SFTP
         {
-          "key": "aaa",
-          "value": "bbbb"
+          "key": "SFTP_HOST",
+          "value": "xxx.yyy.zzz"
+        },
+        {
+          "key": "SFTP_PORT",
+          "value": "22"
+        },
+        {
+          "key": "SFTP_USER",
+          "value": "user"
+        },
+        {
+          "key": "SFTP_PASS",
+          "value": "pass"
+        },
+        {
+          "key": "SFTP_CURRDIR",
+          "value": "/"
+        },
+        {
+          "key": "SFTP_KEYBASE64",
+          "value": "key_base_64"
+        },
+        //Parametri esempio FTP
+        {
+          "key": "FTP_HOST",
+          "value": "xxx.yyy.zzz"
+        },
+        {
+          "key": "FTP_PORT",
+          "value": "22"
+        },
+        {
+          "key": "FTP_USER",
+          "value": "user"
+        },
+        {
+          "key": "FTP_PASS",
+          "value": "pass"
+        },
+        {
+          "key": "FTP_CURRDIR",
+          "value": "/"
+        },
+        {
+          "key": "FTP_PASSIVE",
+          "value": "1"
         }
       ]
     }
   ]
 }
+

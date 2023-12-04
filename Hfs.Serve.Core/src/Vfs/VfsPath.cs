@@ -65,15 +65,6 @@ namespace Hfs.Server.Core.Vfs
 
 
         /// <summary>
-        /// Indica che trattasi di network share con credenziali specifiche
-        /// </summary>
-        public bool IsUncWithCredentials
-        {
-            get { return this.IsUnc 
-                    && !string.IsNullOrEmpty(this.Params[Const.SMB_File_Handling.PATH_PARAM_USER]); }
-        }
-
-        /// <summary>
         /// Indica se il path e' di sistema
         /// </summary>
         public bool IsSystem

@@ -48,13 +48,13 @@ namespace Hfs.Server.Core.FileHandling
 
         public abstract void SetAttribute(FileAttributes attr);
 
-        public void MoveTo(IFileHandler file)
+        public async Task MoveTo(IFileHandler file)
         {
-            this.CopyTo(file);
+            await this.CopyTo(file);
             this.Delete();
         }
 
-        public void CopyTo(IFileHandler file)
+        public async Task CopyTo(IFileHandler file)
         {
             if (this.FullName == file.FullName)
                 throw new HfsException(EStatusCode.PathAreSame, "Il path sorgente non puo' coincidere con quello di destinazione");
@@ -66,9 +66,9 @@ namespace Hfs.Server.Core.FileHandling
                     byte[] buff = new byte[Const.BUFFER_LEN];
                     int iRead;
 
-                    while ((iRead = sr.Read(buff, 0, buff.Length)) > 0)
+                    while ((iRead = await sr.ReadAsync(buff, 0, buff.Length)) > 0)
                     {
-                        sw.Write(buff, 0, iRead);
+                        await sw.WriteAsync(buff, 0, iRead);
                     }
                 }
             }

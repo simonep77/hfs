@@ -10,9 +10,7 @@ namespace Hfs.Server.Core.FileHandling
     {
         static FileDirHandlerFactory()
         {
-            //Registra nuovi uri hfs
-            UriParser.Register(new HttpStyleUriParser(), Const.URI_HFS, 80);
-            UriParser.Register(new HttpStyleUriParser(), Const.URI_HFS_SECURE, 443);
+            
         }
 
         /// <summary>

@@ -1,6 +1,8 @@
-﻿using Hfs.Server.Core.Vfs;
+﻿using FluentScheduler;
+using Hfs.Server.Core.Vfs;
 using System.Diagnostics;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Hfs.Server.Core.Common
 {
@@ -65,11 +67,6 @@ namespace Hfs.Server.Core.Common
         public static HfsStatsCollectorEX Stats;
 
 
-        /// <summary>
-        /// Logger asincrono
-        /// </summary>
-        public static HfsAsyncLogger Logger;
-
 
         public static void Init()
         {
@@ -77,11 +74,10 @@ namespace Hfs.Server.Core.Common
                 throw new ArgumentException($"{nameof(WebApp)} e {nameof(HostingEnv)} devono essere valorizzati");
 
             VfsFilePath = string.IsNullOrWhiteSpace(WebApp?.Configuration["Hfs:VfsFilePath"]) ? Path.Combine(HostingEnv?.ContentRootPath, "data", "vfs.json") : WebApp?.Configuration["Hfs:VfsFilePath"];
-            LogDir = string.IsNullOrWhiteSpace(WebApp.Configuration["Hfs:LogDirectory"])? Path.Combine(HfsData.HostingEnv.ContentRootPath, "data", "log") : WebApp.Configuration["Hfs:LogDirectory"];
             TempDir = string.IsNullOrWhiteSpace(WebApp.Configuration["Hfs:TempDirectory"]) ? Path.Combine(HfsData.HostingEnv.ContentRootPath, "data", "temp") : WebApp.Configuration["Hfs:TempDirectory"];
             LogKeepDays = Convert.ToInt32(WebApp.Configuration["Hfs:LogKeepDays"] ?? "30");
             TempFilesKeepDays = Convert.ToInt32(WebApp.Configuration["Hfs:TempFilesKeepDays"] ?? "30");
-            LogAccess = Convert.ToBoolean(WebApp.Configuration["Hfs:LogAccess"] ?? "false");
+            LogAccess = Convert.ToBoolean(WebApp.Configuration["Hfs:LogAccess"] ?? "true");
             AllowQueryStringParams = Convert.ToBoolean(WebApp.Configuration["Hfs:AllowQueryStringParams"] ?? "true");
             Debug = Convert.ToBoolean(WebApp.Configuration["Hfs:Debug"] ?? "false");
             AdminPass = WebApp.Configuration["Hfs:AdminPass"] ?? "admin";
@@ -89,27 +85,56 @@ namespace Hfs.Server.Core.Common
             internalInit();
         }
 
-        public static void WriteLog(string text, StringBuilder sb)
+        #region Console Log Async
+        private static readonly object _LogLock = new object();
+        private static readonly string _LogSep = string.Empty.PadRight(210, '=');
+        private static StringBuilder _logSb = new StringBuilder(1024 * 1024);
+
+        /// <summary>
+        /// Appende allo string builder un testo in notazione log
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="sb"></param>
+        public static void AppendLog(string text, StringBuilder sb)
         {
             sb.AppendLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} - T{Thread.CurrentThread.ManagedThreadId:00000} - " + text);
         }
 
+        /// <summary>
+        /// Accoda uno stringbuilder nel log senza formattazione
+        /// </summary>
+        /// <param name="sb"></param>
+        public static void WriteLog(StringBuilder sb)
+        {
+            lock (_LogLock)
+            {
+                _logSb.Append(sb);
+            }
+        }
+
+
+        /// <summary>
+        /// Scrive riga di log con data e ora
+        /// </summary>
+        /// <param name="text"></param>
         public static void WriteLog(string text)
         {
-            Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} - T{Thread.CurrentThread.ManagedThreadId:00000} - " + text);
+            lock (_LogLock)
+            {
+                AppendLog(text, _logSb);
+            }
         }
+
 
         public static void WriteException(Exception e)
         {
             StringBuilder sb = new StringBuilder(1500);
             //Scrive
-            Exception oException;
+            Exception? oException;
             int iIndentEx = 0;
             int iInnerCount = 0;
-            string sSep = string.Empty.PadRight(210, '=');
-            var sMsgBase = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} - T{Thread.CurrentThread.ManagedThreadId:00000} - ";
-            sb.Append(sMsgBase);
-            sb.AppendLine(sSep);
+
+            AppendLog(_LogSep, sb);
 
             oException = e;
 
@@ -117,52 +142,18 @@ namespace Hfs.Server.Core.Common
             {
                 string sIndent = string.Empty.PadRight(iIndentEx);
 
-                sb.Append(sMsgBase);
-                sb.Append(sIndent);
                 if (iIndentEx == 0)
-                {
-                    sb.AppendLine("ECCEZIONE!");
-                }
+                    AppendLog($"{sIndent}ECCEZIONE!", sb);
                 else
-                {
-                    sb.Append(iInnerCount.ToString("D2"));
-                    sb.AppendLine(") Inner");
-                }
+                    AppendLog($"{iInnerCount:D2}) Inner", sb);
 
-                sb.Append(sMsgBase);
-                sb.Append(sIndent);
-                sb.Append("  * Tipo     : ");
-                sb.AppendLine(oException.GetType().Name);
-
-                sb.Append(sMsgBase);
-                sb.Append(sIndent);
-                sb.Append("  * Messaggio: ");
-                sb.AppendLine(oException.Message);
-
-                sb.Append(sMsgBase);
-                sb.Append(sIndent);
-                sb.Append("  * Source   : ");
-                sb.AppendLine(oException.Source);
-
-                sb.Append(sMsgBase);
-                sb.Append(sIndent);
-                sb.Append("  * Classe   : ");
-                sb.AppendLine(oException.TargetSite.DeclaringType.Name);
-
-                sb.Append(sMsgBase);
-                sb.Append(sIndent);
-                sb.Append("  * Metodo   : ");
-                sb.AppendLine(oException.TargetSite.Name);
-
-                sb.Append(sMsgBase);
-                sb.Append(sIndent);
-                sb.Append("  * Namespace: ");
-                sb.AppendLine(oException.TargetSite.DeclaringType.Namespace);
-
-                sb.Append(sMsgBase);
-                sb.Append(sIndent);
-                sb.Append("  * Stack    : ");
-                sb.AppendLine(oException.StackTrace);
+                AppendLog($"  * Tipo     : {sIndent}{oException.GetType().Name}", sb);
+                AppendLog($"  * Messaggio: {sIndent}" + oException.Message, sb);
+                AppendLog($"  * Source   : {sIndent}{oException.Source}", sb);
+                AppendLog($"  * Classe   : {sIndent}{oException.TargetSite?.DeclaringType?.Name}", sb);
+                AppendLog($"  * Metodo   : {sIndent}{oException.TargetSite?.Name}", sb);
+                AppendLog($"  * Namespace: {sIndent}{oException.TargetSite?.DeclaringType?.Namespace}", sb);
+                AppendLog($"  * Stack    : {sIndent}" + oException.StackTrace, sb);
 
                 //Successiva
                 iInnerCount++;
@@ -170,20 +161,36 @@ namespace Hfs.Server.Core.Common
                 iIndentEx += 4;
             }
 
-            sb.Append(sMsgBase);
-            sb.AppendLine(sSep);
+            AppendLog(_LogSep, sb);
 
-            Console.Write(sb.ToString());
+            //Accoda a log senza format
+            WriteLog(sb);
         }
+
+        /// <summary>
+        /// Alloca nuovo log buffer e scrive su stdout
+        /// </summary>
+        /// <param name="text"></param>
+        private static void FlushLog()
+        {
+            //Crea nuovo buffer e lo assegna ritornando il vecchio da scrivere
+            var _oldSb = (StringBuilder)Interlocked.Exchange(ref _logSb, new StringBuilder(1024 * 1024));
+
+            Console.Out.Write(_oldSb);
+            _oldSb.Length = 0;
+            _oldSb.Capacity = 0;
+        }
+
+
+        #endregion
+
+
+
 
         private static void internalInit()
         {
-            Directory.CreateDirectory(HfsData.LogDir);
-            //inizializza log vari e avvia
-            HfsData.Logger = new HfsAsyncLogger();
-            HfsData.Logger.InitLog(ELogType.HfsGlobal, System.IO.Path.Combine(HfsData.LogDir, string.Format(Const.LOG_GLOBAL_FILENAME_FMT, DateTime.Now)));
-            HfsData.Logger.InitLog(ELogType.HfsAccess, System.IO.Path.Combine(HfsData.LogDir, string.Format(Const.LOG_ACCESS_FILENAME_FMT, DateTime.Now)));
-            HfsData.Logger.Start();
+            //Avvia job di scrittura console log
+            JobManager.AddJob(() => FlushLog(), s => s.ToRunEvery(5).Seconds());
 
             //Scrive log base
             WriteLog("");
@@ -202,13 +209,23 @@ namespace Hfs.Server.Core.Common
                 HfsData.TempDirSharedFiles = System.IO.Path.Combine(HfsData.TempDir, @"system\shared");
 
                 //Crea cartelle
-                System.IO.Directory.CreateDirectory(HfsData.LogDir);
                 System.IO.Directory.CreateDirectory(HfsData.TempDir);
                 System.IO.Directory.CreateDirectory(HfsData.TempDirRemoteFiles);
                 System.IO.Directory.CreateDirectory(HfsData.TempDirSharedFiles);
 
-                //Avvia task
-                HfsTaskHandler.Start();
+                //Avvia task pulizia temporanei ad intervalli
+                JobManager.AddJob(() =>
+                {
+                    //Log avvio
+                    HfsData.WriteLog("Avvio pulizia temporanei..");
+
+                    //Pulisce
+                    DateTime dtExpired = DateTime.Today.AddDays(1).AddSeconds(-1).AddDays(-HfsData.TempFilesKeepDays);
+                    Utility.CleanDirectory(HfsData.TempDir, @"*", dtExpired, true);
+
+                    //Log fine
+                    HfsData.WriteLog("Fine pulizia temporanei");
+                }, s => s.ToRunEvery(1).Days().At(23, 50));
 
                 //Carica e aggiunge
                 HfsData.Vfs.Load();
@@ -216,14 +233,14 @@ namespace Hfs.Server.Core.Common
             catch (Exception ex)
             {
                 //Logga eventuale eccezione
-                HfsData.Logger.WriteException(ELogType.HfsGlobal, ex);
+                WriteException(ex);
             }
         }
 
 
         public static void Stop()
         {
-            HfsData.Logger.Stop(true);
+            JobManager.StopAndBlock();
         }
 
 

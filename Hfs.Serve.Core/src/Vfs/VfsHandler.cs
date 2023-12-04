@@ -91,7 +91,10 @@ namespace Hfs.Server.Core.Vfs
 
                 try
                 {
-                    model = JsonSerializer.Deserialize<VfsModelRoot>(File.ReadAllText(this.mVfsFilePath)) ?? throw new ArgumentException($"Il file {Path.GetFileName(this.mVfsFilePath)} non è un VFS valido");
+                    model = JsonSerializer.Deserialize<VfsModelRoot>(File.ReadAllText(this.mVfsFilePath), new JsonSerializerOptions
+                    {
+                        ReadCommentHandling = JsonCommentHandling.Skip,
+                    }) ?? throw new ArgumentException($"Il file {Path.GetFileName(this.mVfsFilePath)} non è un VFS valido");
                 }
                 catch (Exception ex)
                 {
@@ -419,12 +422,6 @@ namespace Hfs.Server.Core.Vfs
             oPath.AddAccess(oAdminAccess);
             this.addPath(oPath, true);
 
-            //Aggiunge vpath log
-            oPath = new VfsPath(this);
-            oPath.Virtual = Const.VFS_PATH_LOG;
-            oPath.Physical = HfsData.LogDir;
-            oPath.AddAccess(oAdminAccess);
-            this.addPath(oPath, true);
 
             //Aggiunge vpath vfs
             oPath = new VfsPath(this);

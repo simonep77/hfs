@@ -24,9 +24,6 @@ namespace Hfs.Server.Core.Common
          */
         public const string LOG_SEPARATOR = @"=========================================================================";
         public const char URI_SEPARATOR = '/';
-        public const string LOG_GLOBAL_FILENAME_FMT = @"hfs_global_{0:yyyy_MM_dd}.log";
-        public const string LOG_ACCESS_FILENAME_FMT = @"hfs_access_{0:yyyy_MM_dd}.log";
-        public const string LOG_PATTERN = @"hfs_*.log";
         public const string LOG_START_LINE = @"HTTP File Server v{0} - avvio applicazione";
         public const string LOG_ACCESS_MSG_FMT = @"Accesso: {0,-6} - Azione: {1,-12} - User: {2,-12} - IP: {3,-15} - Risorsa: {4}";
 
@@ -37,7 +34,6 @@ namespace Hfs.Server.Core.Common
         public const string HEADER_STATUS_CODE = @"HFS-STATUS-CODE";
         public const string HEADER_STATUS_MSG = @"HFS-STATUS-MSG";
         public const string HEADER_CONTENT_LEN = @"Content-Length";
-        public const string HEADER_CONTENT_TYPE_BIN = @"binary/octetstream";
         public const string HEADER_CONTENT_TYPE_TEXT = @"text/html";
         public const string HEADER_CONTENT_DISP = @"Content-Disposition";
         public const string HEADER_CONTENT_DISP_VAL = @"inline;filename={0}";
@@ -47,7 +43,7 @@ namespace Hfs.Server.Core.Common
          Costanti Parametri
          */
         public const string QS_HEADER_PREFIX = @"hfs-";
-        public const string QS_LINK = @"hfs-link";
+        public const string QS_LINK = $"{QS_HEADER_PREFIX}link";
         public const string QS_USER = @"hfs-user";
         public const string QS_PASS = @"hfs-pass";
         public const string QS_VPATH = @"hfs-vpath";
@@ -79,7 +75,6 @@ namespace Hfs.Server.Core.Common
         public const string VFS_USER_ANY = @"*";
         public const string VFS_USER_AUTH = @"?";
         public const int VFS_LOAD_WAIT_MSEC = 5000;
-        public const int VFS_LOAD_CHECK_MSEC = 20;
 
         public const string VFS_ACCESS_ALL = @"RWDL";
         public const char VFS_ACCESS_READ = 'R';
@@ -88,23 +83,6 @@ namespace Hfs.Server.Core.Common
         public const char VFS_ACCESS_LIST = 'L';
 
         /* URI */
-
-        /// <summary>
-        /// Schema uri hfs
-        /// </summary>
-        public const string URI_HFS = @"hfs";
-
-        /// <summary>
-        /// Schema uri hfs su ssl
-        /// </summary>
-        public const string URI_HFS_SECURE = @"hfss";
-
-
-        /// <summary>
-        /// Tipo conversione swf
-        /// </summary>
-        public const string HFS_CONVERT_TYPE_PDF = @"pdf";
-
 
         /// <summary>
         /// Costanti relative alla gestione SFTP
@@ -132,14 +110,6 @@ namespace Hfs.Server.Core.Common
             public const string PATH_PARAM_PASSIVE = @"FTP_PASSIVE";
 
         }
-
-        public static class SMB_File_Handling
-        {
-            public const string PATH_PARAM_USER = @"SMB_USER";
-            public const string PATH_PARAM_PASS = @"SMB_PASS";
-
-        }
-
 
     }
 }

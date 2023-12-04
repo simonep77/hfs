@@ -564,7 +564,7 @@ namespace Hfs.Server.Core.Common
             }
             catch (Exception e)
             {
-                HfsData.Logger.WriteException(ELogType.HfsGlobal, e);
+                HfsData.WriteException(e);
             }
 
         }
@@ -595,24 +595,25 @@ namespace Hfs.Server.Core.Common
         {
             //Logga eccezione
             var sb = new StringBuilder();
-            HfsData.WriteLog(title, sb);
-            HfsData.WriteLog($" RequestID: {req.ReqId}", sb);
-            HfsData.WriteLog(@" Parametri HFS-HEADER", sb);
+            HfsData.AppendLog(title, sb);
+            HfsData.AppendLog($" RequestID: {req.ReqId}", sb);
+            HfsData.AppendLog(@" Parametri HFS-HEADER", sb);
 
-            context.Request.Headers.Where(x => x.Key.StartsWith(Const.QS_HEADER_PREFIX)).ToList().ForEach(x => HfsData.WriteLog($"   - {x.Key}: '{x.Value}'", sb));
+            context.Request.Headers.Where(x => x.Key.StartsWith(Const.QS_HEADER_PREFIX)).ToList().ForEach(x => HfsData.AppendLog($"   - {x.Key}: '{x.Value}'", sb));
 
-            context.Request.Query.Where(x => x.Key.StartsWith(Const.QS_HEADER_PREFIX)).ToList().ForEach(x => HfsData.WriteLog($"   - {x.Key}: '{x.Value}'", sb));
+            context.Request.Query.Where(x => x.Key.StartsWith(Const.QS_HEADER_PREFIX)).ToList().ForEach(x => HfsData.AppendLog($"   - {x.Key}: '{x.Value}'", sb));
 
-            HfsData.WriteLog(@" Parametri AMBIENTE", sb);
-            HfsData.WriteLog($"   - file/dir: '{resp?.PhysicalPath}'", sb);
-            HfsData.WriteLog($"   - clientIp: {context.Connection.RemoteIpAddress}", sb);
-            HfsData.WriteLog($"   - clientAgent: {context.Request.Headers["User-Agent"]}", sb);
-            HfsData.WriteLog($"   - datalen: '{context.Request.ContentLength}'", sb);
-            HfsData.WriteLog(@" Parametri RISPOSTA", sb);
-            HfsData.WriteLog($"   - code: {code}", sb);
-            HfsData.WriteLog(@"   - msg: " + msg, sb);
-            HfsData.WriteLog(Const.LOG_SEPARATOR, sb);
-            HfsData.WriteLog(sb.ToString());
+            HfsData.AppendLog(@" Parametri AMBIENTE", sb);
+            HfsData.AppendLog($"   - file/dir: '{resp?.PhysicalPath}'", sb);
+            HfsData.AppendLog($"   - clientIp: {context.Connection.RemoteIpAddress}", sb);
+            HfsData.AppendLog($"   - clientAgent: {context.Request.Headers["User-Agent"]}", sb);
+            HfsData.AppendLog($"   - datalen: '{context.Request.ContentLength}'", sb);
+            HfsData.AppendLog(@" Parametri RISPOSTA", sb);
+            HfsData.AppendLog($"   - code: {code}", sb);
+            HfsData.AppendLog(@"   - msg: " + msg, sb);
+            HfsData.AppendLog(Const.LOG_SEPARATOR, sb);
+            
+            HfsData.WriteLog(sb);
 
         }
 

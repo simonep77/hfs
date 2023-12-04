@@ -161,7 +161,7 @@ namespace Hfs.Server.Core.FileHandling
             }
             catch (Exception ex)
             {
-                HfsData.Logger.WriteException(ELogType.HfsGlobal, ex);
+                HfsData.WriteException(ex);
             }
 
 

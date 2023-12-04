@@ -1,13 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "8QZsVd0EilB6mLKaoBe91jirqwG3twvpOHjLk14xZe/BRVXDTVS2PWZXhUJoJeGYgwnga/O0AM+iE8DeE+l6nQ==",
+  "dgSpecHash": "s+kj35TpI55FDGYHrOdydUXQr0i1siFtWAA6iJ6dCSu3/Vg9/H1R2m59EZYgxacKMO9tGiXkBEiVU97gHmyTGQ==",
   "success": true,
-  "projectFilePath": "D:\\SVILUPPO\\hfs\\simonep77\\hfs\\Hfs.Core.Test\\Hfs.Core.Test.csproj",
+  "projectFilePath": "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Core.Test\\Hfs.Core.Test.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.32\\microsoft.netcore.app.host.win-x64.3.1.32.nupkg.sha512"
+    "C:\\Users\\simone.pelaia\\.nuget\\packages\\hfs.client\\2.0.11\\hfs.client.2.0.11.nupkg.sha512"
   ],
   "logs": []
 }

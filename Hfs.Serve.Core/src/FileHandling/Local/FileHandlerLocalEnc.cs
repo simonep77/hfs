@@ -80,16 +80,9 @@ namespace Hfs.Server.Core.FileHandling
 
         public override Stream OpenRead()
         {
-
-
-
-
             this.checkExist();
 
             return this.mFileInfo.OpenRead();
-
-
-
         }
 
         public override Stream OpenWrite(bool overwrite)

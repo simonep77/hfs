@@ -22,9 +22,9 @@ namespace Hfs.Server.Core.FileHandling
 
         string GetInfoXml();
 
-        void MoveTo(IFileHandler file);
+        Task MoveTo(IFileHandler file);
 
-        void CopyTo(IFileHandler file);
+        Task CopyTo(IFileHandler file);
 
         void SetAttribute(FileAttributes attr);
 

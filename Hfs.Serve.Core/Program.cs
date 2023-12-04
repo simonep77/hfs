@@ -16,9 +16,16 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 var app = builder.Build();
 
+//Imposta esecuzione principale
 app.Map("/hfs", async (HttpContext context) =>
 {
     await HfsHandler.Handle(context);
+});
+
+//Imposta routine di shutdown
+app.Lifetime.ApplicationStopping.Register(() =>
+{
+    HfsData.Stop();
 });
 
 //Appoggia dati utili

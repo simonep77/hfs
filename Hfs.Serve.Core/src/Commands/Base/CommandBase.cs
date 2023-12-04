@@ -73,7 +73,7 @@ namespace Hfs.Server.HfsCore.Commands
 
             //Logga accesso a risorsa
             if (HfsData.LogAccess && this.Action.ToString()[0] != Const.VFS_ACCESS_LIST)
-                HfsData.Logger.WriteMessage(ELogType.HfsAccess, Const.LOG_ACCESS_MSG_FMT, this.Action.ToString(), this.ActionKey, this.Response.User.Name, this.Request.IP, this.Request.VPath);
+                HfsData.WriteLog(string.Format(Const.LOG_ACCESS_MSG_FMT, this.Action.ToString(), this.ActionKey, this.Response.User.Name, this.Request.IP, this.Request.VPath));
 
             //Se presente destinazione viene controllata e poi caricata
             if (this.ActionDest != VfsAction.None)
@@ -89,7 +89,7 @@ namespace Hfs.Server.HfsCore.Commands
 
                 //Logga accesso dest
                 if (HfsData.LogAccess && this.ActionDest.ToString()[0] != Const.VFS_ACCESS_LIST)
-                    HfsData.Logger.WriteMessage(ELogType.HfsAccess, Const.LOG_ACCESS_MSG_FMT, this.ActionDest.ToString(), this.ActionKey, this.Response.User.Name, this.Request.IP, this.Request.VPathDest);
+                    HfsData.WriteLog(string.Format(Const.LOG_ACCESS_MSG_FMT, this.ActionDest.ToString(), this.ActionKey, this.Response.User.Name, this.Request.IP, this.Request.VPathDest));
 
             }
 
@@ -158,7 +158,7 @@ namespace Hfs.Server.HfsCore.Commands
             {
                 this.BytesSent += fs.Length;
                 //Scrivo header
-                this.Context.Response.ContentType = MimeHelper.GetMimeFromExtension(fh.Extension);
+                this.Context.Response.ContentType = MimeHelper.GetMimeFromFilename(fh.Name);
                 this.Context.Response.ContentLength = fs.Length;
                 this.Context.Response.Headers[Const.HEADER_CONTENT_DISP] = string.Format(Const.HEADER_CONTENT_DISP_VAL, fh.Name);
 
@@ -199,11 +199,10 @@ namespace Hfs.Server.HfsCore.Commands
                 try
                 {
                     await this.Context.Request.Body.CopyToAsync(oFs, Const.BUFFER_LEN);
+                    await oFs.FlushAsync();
                 }
                 finally
                 {
-                    //Flush file
-                    oFs.Flush();
                     //Chiude stream
                     this.Context.Request.Body.Close();
                 }
