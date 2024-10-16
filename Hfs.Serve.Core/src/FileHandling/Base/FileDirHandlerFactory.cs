@@ -32,6 +32,8 @@ namespace Hfs.Server.Core.FileHandling
                     return new FileHandlerSFtp(resp);
                 case EVfsPathType.Ftp:
                     return new FileHandlerFtp(resp);
+                case EVfsPathType.S3:
+                    return new FileHandlerS3(resp);
                 default:
                     throw new ApplicationException("Tipo di path non gestito.");
             }
@@ -57,6 +59,8 @@ namespace Hfs.Server.Core.FileHandling
                     return new DirHandlerSFtp(resp);
                 case EVfsPathType.Ftp:
                     return new DirHandlerFtp(resp);
+                case EVfsPathType.S3:
+                    return new DirHandlerS3(resp);
                 default:
                     throw new ApplicationException("Tipo di path non gestito.");
             }

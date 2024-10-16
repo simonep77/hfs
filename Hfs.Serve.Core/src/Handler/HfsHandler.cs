@@ -4,14 +4,14 @@ using System.Text;
 
 namespace Hfs.Serve.Core.Handler
 {
-    public class HfsHandler
+    public static class HfsHandler
     {
         /// <summary>
         /// Metodo base gestione hfs
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public async static Task Handle(HttpContext context)
+        public async static Task HandleHfsRequest(this HttpContext context)
         {
             try
             {

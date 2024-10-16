@@ -20,55 +20,76 @@
       ],
       "parameters": [
         //Parametri esempio SFTP
-        {
-          "key": "SFTP_HOST",
-          "value": "xxx.yyy.zzz"
-        },
-        {
-          "key": "SFTP_PORT",
-          "value": "22"
-        },
-        {
-          "key": "SFTP_USER",
-          "value": "user"
-        },
-        {
-          "key": "SFTP_PASS",
-          "value": "pass"
-        },
-        {
-          "key": "SFTP_CURRDIR",
-          "value": "/"
-        },
-        {
-          "key": "SFTP_KEYBASE64",
-          "value": "key_base_64"
+        //{
+        //  "key": "HOST",
+        //  "value": "xxx.yyy.zzz"
+        //},
+        //{
+        //  "key": "PORT",
+        //  "value": "22"
+        //},
+        //{
+        //  "key": "USER",
+        //  "value": "user"
+        //},
+        //{
+        //  "key": "PASS",
+        //  "value": "pass"
+        //},
+        //{
+        //  "key": "CURRDIR",
+        //  "value": "/"
+        //},
+        //{
+        //  "key": "KEYBASE64",
+        //  "value": "key_base_64"
         },
         //Parametri esempio FTP
-        {
-          "key": "FTP_HOST",
-          "value": "xxx.yyy.zzz"
-        },
-        {
-          "key": "FTP_PORT",
-          "value": "22"
-        },
-        {
-          "key": "FTP_USER",
-          "value": "user"
-        },
-        {
-          "key": "FTP_PASS",
-          "value": "pass"
-        },
-        {
-          "key": "FTP_CURRDIR",
-          "value": "/"
-        },
-        {
-          "key": "FTP_PASSIVE",
-          "value": "1"
-        }
+        //{
+        //  "key": "HOST",
+        //  "value": "xxx.yyy.zzz"
+        //},
+        //{
+        //  "key": "PORT",
+        //  "value": "21"
+        //},
+        //{
+        //  "key": "USER",
+        //  "value": "user"
+        //},
+        //{
+        //  "key": "PASS",
+        //  "value": "pass"
+        //},
+        //{
+        //  "key": "CURRDIR",
+        //  "value": "/"
+        //},
+        //{
+        //  "key": "PASSIVE",
+        //  "value": "1"
+        //},
+        //Parametri esempio S3
+        //{
+        //  "key": "ENDPOINT",
+        //  "value": "xxx.yyy.zzz"
+        //},
+        //{
+        //  "key": "ACCESS_KEY",
+        //  "value": "user"
+        //},
+        //{
+        //  "key": "SECRET_KEY",
+        //  "value": "pass"
+        //},
+        //{
+        //  "key": "BUCKET_NAME",
+        //  "value": "my_bucket"
+        //},
+        //{
+        //  "key": "CURRDIR",
+        //  "value": "/"
+        //}
       ]
     }
   ]

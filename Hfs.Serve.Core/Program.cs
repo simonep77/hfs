@@ -17,9 +17,13 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 var app = builder.Build();
 
 //Imposta esecuzione principale
+app.Map("/hfs/FileServer.ashx", async (HttpContext context) =>
+{
+    await context.HandleHfsRequest();
+});
 app.Map("/hfs", async (HttpContext context) =>
 {
-    await HfsHandler.Handle(context);
+    await context.HandleHfsRequest();
 });
 
 //Imposta routine di shutdown
@@ -29,9 +33,7 @@ app.Lifetime.ApplicationStopping.Register(() =>
 });
 
 //Appoggia dati utili
-HfsData.HostingEnv = app.Environment;
 HfsData.WebApp = app;
-HfsData.WebLogger = app.Logger;
 
 //Avvia ambiente
 HfsData.Init();

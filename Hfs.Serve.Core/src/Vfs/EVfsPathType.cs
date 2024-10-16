@@ -24,7 +24,12 @@ namespace Hfs.Server.Core.Vfs
         /// <summary>
         /// Indica che il path e' un FTP remoto
         /// </summary>
-        Ftp = 4
+        Ftp = 4,
+
+        /// <summary>
+        /// Indica che il path è un object storage S3
+        /// </summary>
+        S3 = 5
 
     }
 }

@@ -108,7 +108,15 @@ namespace Hfs.Server.Core.Common
             public const string PATH_PARAM_PASS = @"PASS";
             public const string PATH_PARAM_CURRDIR = @"CURRDIR";
             public const string PATH_PARAM_PASSIVE = @"PASSIVE";
+        }
 
+        public static class S3_File_Handling
+        {
+            public const string PATH_PARAM_ENDPOINT = @"ENDPOINT";
+            public const string PATH_PARAM_ACCESS_KEY = @"ACCESS_KEY";
+            public const string PATH_PARAM_SECRET_KEY = @"SECRET_KEY";
+            public const string PATH_PARAM_BUCKET_NAME = @"BUCKET_NAME";
+            public const string PATH_PARAM_CURRDIR = @"CURRDIR";
         }
     }
 }

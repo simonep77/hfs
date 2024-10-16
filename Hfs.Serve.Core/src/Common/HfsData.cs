@@ -1,5 +1,6 @@
 ﻿using FluentScheduler;
 using Hfs.Server.Core.Vfs;
+using Microsoft.Extensions.Caching.Memory;
 using System.Diagnostics;
 using System.Text;
 using static System.Net.Mime.MediaTypeNames;
@@ -12,9 +13,7 @@ namespace Hfs.Server.Core.Common
     public class HfsData
     {
 
-        public static IWebHostEnvironment? HostingEnv { get; set; }
         public static WebApplication? WebApp { get; set; }
-        public static ILogger? WebLogger { get; set; }
 
         public static string AdminPass = string.Empty;
         public static int TempFilesKeepDays = 30;
@@ -22,6 +21,13 @@ namespace Hfs.Server.Core.Common
         public static bool AllowQueryStringParams = true;
         public static bool Debug = false;
 
+
+        public static IMemoryCache ApplicationCache { get; } = new MemoryCache(new MemoryCacheOptions
+        {
+            ExpirationScanFrequency = TimeSpan.FromMinutes(10),
+            SizeLimit = 2000,
+            CompactionPercentage = 0.30,
+        });
 
         /// <summary>
         /// Directory base di lavoro hfs
@@ -64,11 +70,11 @@ namespace Hfs.Server.Core.Common
 
         public static void Init()
         {
-            if (WebApp is null || HostingEnv is null)
-                throw new ArgumentException($"{nameof(WebApp)} e {nameof(HostingEnv)} devono essere valorizzati");
+            if (WebApp is null)
+                throw new ArgumentException($"{nameof(WebApp)} deve essere valorizzata");
 
-            VfsFilePath = Environment.GetEnvironmentVariable("VfsFilePath") ?? WebApp.Configuration["Hfs:TempDirectory"] ?? Path.Combine(HfsData.HostingEnv.ContentRootPath, "data", "vfs.json");
-            TempDir = Environment.GetEnvironmentVariable("TempDirectory") ?? WebApp.Configuration["Hfs:TempDirectory"] ?? Path.Combine(HfsData.HostingEnv.ContentRootPath, "data", "temp");
+            VfsFilePath = Environment.GetEnvironmentVariable("VfsFilePath") ?? WebApp.Configuration["Hfs:TempDirectory"] ?? Path.Combine(HfsData.WebApp.Environment.ContentRootPath, "data", "vfs.json");
+            TempDir = Environment.GetEnvironmentVariable("TempDirectory") ?? WebApp.Configuration["Hfs:TempDirectory"] ?? Path.Combine(HfsData.WebApp.Environment.ContentRootPath, "data", "temp");
             TempFilesKeepDays = Convert.ToInt32(Environment.GetEnvironmentVariable("TempFilesKeepDays") ?? WebApp.Configuration["Hfs:TempFilesKeepDays"] ?? "30");
             LogAccess = Convert.ToBoolean(Environment.GetEnvironmentVariable("LogAccess") ?? WebApp.Configuration["Hfs:LogAccess"] ?? "true");
             AllowQueryStringParams = Convert.ToBoolean(Environment.GetEnvironmentVariable("AllowQueryStringParams") ?? WebApp.Configuration["Hfs:AllowQueryStringParams"] ?? "true");
