@@ -70,6 +70,9 @@ namespace Hfs.Server.Core.FileHandling
                     {
                         await sw.WriteAsync(buff, 0, iRead);
                     }
+
+                    //Forziamo il flush/scrittura
+                    await sw.FlushAsync();
                 }
             }
         }

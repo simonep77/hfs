@@ -1,5 +1,6 @@
 ﻿using Hfs.Server.Core.Common;
 using Minio;
+using Minio.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,8 +42,7 @@ namespace Hfs.Server.Core.FileHandling
             this.mClient = cli;
 
             //Imposta path normalizzato
-            this.mNormalizedPath = string.Concat(Const.URI_SEPARATOR,
-                Utility.NormalizeVirtualPath(string.Concat(this.mClient.CurrenDir, resp.VirtualPath.Replace(resp.Path.Virtual, ""))).TrimStart(Const.URI_SEPARATOR));
+            this.mNormalizedPath = string.Concat(this.mClient.CurrenDir, resp.VirtualPath.Replace(resp.Path.Virtual, "", StringComparison.InvariantCultureIgnoreCase)).Trim(Const.URI_SEPARATOR);
         }
 
         public override string FullName
@@ -120,7 +120,14 @@ namespace Hfs.Server.Core.FileHandling
         public override Stream OpenRead()
         {
             var ms = new MemoryStream();
-            AsyncHelper.RunSync(() => this.mClient.DownloadStream(this.mNormalizedPath, ms));
+            try
+            {
+                AsyncHelper.RunSync(() => this.mClient.DownloadStream(this.mNormalizedPath, ms));
+            }
+            catch (ObjectNotFoundException e)
+            {
+                throw new HfsException(EStatusCode.FileNotFound, $"Il file {this.mNormalizedPath} non esiste");
+            }
             ms.Position = 0;
             return ms;
         }

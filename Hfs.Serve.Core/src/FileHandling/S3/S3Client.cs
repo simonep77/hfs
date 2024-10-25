@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.DataProtection;
+﻿using Hfs.Server.Core.Common;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Minio;
 using Minio.DataModel;
@@ -48,10 +49,10 @@ namespace Hfs.Server.Core.FileHandling
 
         public async Task<bool> Exist(string remoteFile)
         {
-            var args = new GetObjectArgs().WithBucket(this.bucketName).WithObject(remoteFile);
+            var args = new StatObjectArgs().WithBucket(this.bucketName).WithObject(remoteFile);
             try
             {
-                var stats = await this.Client.GetObjectAsync(args);
+                var stats = await this.Client.StatObjectAsync(args);
                 return true;
             }
             catch (ObjectNotFoundException)
@@ -79,7 +80,7 @@ namespace Hfs.Server.Core.FileHandling
 
         public async Task UploadStream(string remoteFile, Stream stream)
         {
-            var args = new PutObjectArgs().WithBucket(this.bucketName).WithObject(remoteFile).WithStreamData(stream);
+            var args = new PutObjectArgs().WithBucket(this.bucketName).WithObject(remoteFile).WithObjectSize(stream.Length).WithStreamData(stream).WithContentType(MimeHelper.GetMimeFromFilename(remoteFile));
             await this.Client.PutObjectAsync(args);
         }
 

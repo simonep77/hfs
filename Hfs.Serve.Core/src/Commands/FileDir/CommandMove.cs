@@ -10,7 +10,7 @@ namespace Hfs.Server.HfsCore.Commands
 
         async protected override Task CommandExecute()
         {
-            this.FileHandler.MoveTo(this.FileHandlerDest ?? throw new ArgumentNullException("Destinazione nulla"));
+            await this.FileHandler.MoveTo(this.FileHandlerDest ?? throw new ArgumentNullException("Destinazione nulla"));
         }
     }
 }

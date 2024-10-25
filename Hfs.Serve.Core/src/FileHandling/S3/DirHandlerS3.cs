@@ -26,9 +26,10 @@ namespace Hfs.Server.Core.FileHandling
                 resp.Path.Params[Const.S3_File_Handling.PATH_PARAM_CURRDIR]);
 
             //Imposta path normalizzato
-            this.mNormalizedPath = string.Concat(Const.URI_SEPARATOR,
-                Utility.NormalizeVirtualPath(string.Concat(this.mClient.CurrenDir, this.mVfsResp.VirtualPath.Replace(this.mVfsResp.Path.Virtual, ""))).TrimStart(Const.URI_SEPARATOR));
 
+            this.mNormalizedPath = Utility.NormalizeVirtualPath(string.Concat(this.mClient.CurrenDir, this.mVfsResp.VirtualPath.Replace(this.mVfsResp.Path.Virtual, "", StringComparison.InvariantCultureIgnoreCase))).Trim(Const.URI_SEPARATOR);
+            if (!string.IsNullOrWhiteSpace(this.mNormalizedPath))
+                this.mNormalizedPath = this.mNormalizedPath + Const.URI_SEPARATOR;
         }
 
         public override string FullName
@@ -75,7 +76,7 @@ namespace Hfs.Server.Core.FileHandling
             {
                 foreach (var item in files)
                 {
-                    var nome = Path.GetFileName(item.Key);
+                    var nome = Path.GetFileName(item.Key.Replace("%2F", ""));
 
                     if (!(!rgx?.IsMatch(nome) ?? true))
                         continue;
@@ -107,7 +108,7 @@ namespace Hfs.Server.Core.FileHandling
             {
                 foreach (var item in files)
                 {
-                    var nome = Path.GetFileName(item.Key);
+                    var nome = Path.GetFileName(item.Key.Replace("%2F", ""));
 
                     if (!(!rgx?.IsMatch(nome) ?? true))
                         continue;

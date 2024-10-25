@@ -11,6 +11,7 @@ namespace Hfs.Server.Core.FileHandling
         private S3Client mClient;
         private string mVpath;
         private bool mOverwrite;
+        private bool mWritten;
 
         public S3WriteStream(S3Client cli, string vpath,  bool overwrite)
             :base()
@@ -36,14 +37,21 @@ namespace Hfs.Server.Core.FileHandling
             return base.Seek(offset, loc);
         }
 
+        public override async Task FlushAsync(CancellationToken cancellationToken)
+        {
+            this.Position = 0;
+            this.mWritten = true;
+            await this.mClient.UploadStream(this.mVpath, this);
+        }
+
         /// <summary>
         /// Invia dati e chiude
         /// </summary>
-        public override void Close()
+        public override async void Close()
         {
-            this.Flush();
-            this.Position = 0;
-            AsyncHelper.RunSync(() => this.mClient.UploadStream(this.mVpath, this));
+            if (!this.mWritten)
+                await this.FlushAsync();
+            
         }
     }
 }
