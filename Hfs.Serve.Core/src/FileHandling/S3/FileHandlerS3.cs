@@ -116,7 +116,6 @@ namespace Hfs.Server.Core.FileHandling
         }
 
 
-
         public override Stream OpenRead()
         {
             var ms = new MemoryStream();
@@ -134,7 +133,7 @@ namespace Hfs.Server.Core.FileHandling
 
         public override Stream OpenWrite(bool overwrite)
         {
-            return new S3WriteStream(this.mClient, this.VfsResp.VirtualPath, overwrite);
+            return new S3WriteStream(this.mClient, this.mNormalizedPath, overwrite);
         }
 
         public override void Dispose()

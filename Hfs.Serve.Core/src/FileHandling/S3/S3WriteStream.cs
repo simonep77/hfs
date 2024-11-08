@@ -37,21 +37,21 @@ namespace Hfs.Server.Core.FileHandling
             return base.Seek(offset, loc);
         }
 
-        public override async Task FlushAsync(CancellationToken cancellationToken)
-        {
-            this.Position = 0;
-            this.mWritten = true;
-            await this.mClient.UploadStream(this.mVpath, this);
-        }
 
         /// <summary>
         /// Invia dati e chiude
         /// </summary>
-        public override async void Close()
+        public override void Close()
         {
-            if (!this.mWritten)
-                await this.FlushAsync();
-            
+            //if (!this.mWritten)
+            //    await this.FlushAsync();
+            AsyncHelper.RunSync(() =>
+            {
+                this.Position = 0;
+                this.mWritten = true;
+                return this.mClient.UploadStream(this.mVpath, this);
+            });
+
         }
     }
 }

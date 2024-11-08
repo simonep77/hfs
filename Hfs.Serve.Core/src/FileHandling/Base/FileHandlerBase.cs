@@ -63,16 +63,7 @@ namespace Hfs.Server.Core.FileHandling
             {
                 using (Stream sw = file.OpenWrite(true))
                 {
-                    byte[] buff = new byte[Const.BUFFER_LEN];
-                    int iRead;
-
-                    while ((iRead = await sr.ReadAsync(buff, 0, buff.Length)) > 0)
-                    {
-                        await sw.WriteAsync(buff, 0, iRead);
-                    }
-
-                    //Forziamo il flush/scrittura
-                    await sw.FlushAsync();
+                    await sr.CopyToAsync(sw, Const.BUFFER_LEN);
                 }
             }
         }
