@@ -366,37 +366,6 @@ namespace Hfs.Server.Core.Common
 
 
 
-        /// <summary>
-        /// Elimina un albero di cartelle
-        /// </summary>
-        /// <param name="dir"></param>
-        public static async Task<bool> CleanDirectoryTree(string dir, bool remove)
-        {
-            //Se non esiste esce
-            if (!System.IO.Directory.Exists(dir))
-                return false;
-
-            //Elimina tutti i file
-            string[] files = Directory.GetFiles(dir);
-            for (int i = 0; i < files.Length; i++)
-            {
-                File.Delete(files[i]);
-            }
-
-            //Va in ricorsione sulle sottocartelle
-            string[] dirs = Directory.GetDirectories(dir);
-            for (int i = 0; i < dirs.Length; i++)
-            {
-                await Utility.CleanDirectoryTree(dirs[i], true);
-            }
-
-            //Infine elimina la cartella corrente
-            if (remove)
-                System.IO.Directory.Delete(dir);
-
-            return true;
-        }
-
 
         /// <summary>
         /// Calcola dimensione files
@@ -528,38 +497,40 @@ namespace Hfs.Server.Core.Common
         /// <summary>
         /// Esecuzione pulizia directory in base a pattern, data di ultima modifica con opzione di ricorsione.
         /// </summary>
-        public static void CleanDirectory(string directory, string pattern, DateTime dtExpired, bool includeSubDirs)
+        public static void CleanDirectory(string directory, string pattern, DateTime dtExpired, bool includeSubDirs, int level)
         {
             try
             {
-                FileInfo fInfo;
-
-                //Per ogni file
-                foreach (string sFile in Directory.GetFiles(directory, pattern))
+                var dInfo = new DirectoryInfo(directory);
+                dInfo.GetFiles(pattern).Where(x => x.LastWriteTime < dtExpired && x.Exists).ToList().ForEach(x =>
                 {
                     try
                     {
-                        fInfo = new FileInfo(sFile);
-
-                        if (fInfo.LastWriteTime < dtExpired && fInfo.Exists)
-                            fInfo.Delete();
+                        x.Delete();
                     }
                     catch (Exception e)
                     {
                         HfsData.WriteLog($"Errore durante la pulizia della directory {directory}");
                         HfsData.WriteException(e);
                     }
-
-                }
+                });
 
                 //Se non richieste subdir esce
-                if (!includeSubDirs)
-                    return;
-
-                //Per ogni sottocartella va in ricorsione
-                foreach (string sDir in Directory.GetDirectories(directory))
+                if (includeSubDirs)
                 {
-                    Utility.CleanDirectory(sDir, pattern, dtExpired, includeSubDirs);
+                    //Per ogni sottocartella va in ricorsione
+                    foreach (var dir in dInfo.GetDirectories(directory))
+                    {
+                        Utility.CleanDirectory(dir.FullName, pattern, dtExpired, includeSubDirs, level + 1);
+                    }
+                }
+
+                //Se siamo ad un livello sottostante eliminiamo le directory vuote
+                if (level > 0)
+                {
+                    dInfo.Refresh();
+                    if (!dInfo.GetFileSystemInfos().Any())
+                        dInfo.Delete();
                 }
             }
             catch (Exception e)
@@ -612,7 +583,7 @@ namespace Hfs.Server.Core.Common
             HfsData.AppendLog($"   - code: {code}", sb);
             HfsData.AppendLog(@"   - msg: " + msg, sb);
             HfsData.AppendLog(Const.LOG_SEPARATOR, sb);
-            
+
             HfsData.WriteLog(sb);
 
         }

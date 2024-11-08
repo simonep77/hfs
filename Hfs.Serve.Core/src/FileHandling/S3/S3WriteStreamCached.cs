@@ -6,19 +6,18 @@ using System.IO;
 
 namespace Hfs.Server.Core.FileHandling
 {
-    internal class S3WriteStream : MemoryStream
+    internal class S3WriteStreamCached : FileStream
     {
         private Action<Stream> mOnComplete;
 
-        public S3WriteStream(Action<Stream> oncomplete)
-            : base()
+        public S3WriteStreamCached(string cachepath, FileMode mode, Action<Stream> onComplete)
+            : base(cachepath, mode, FileAccess.ReadWrite, FileShare.ReadWrite)
         {
-            if (oncomplete is null)
+            if (onComplete is null)
                 throw new ArgumentNullException("E' necessario fornire un'azione di completamento");
-
-            this.mOnComplete = oncomplete;
+            
+            this.mOnComplete = onComplete;
         }
-
 
 
         /// <summary>
@@ -26,6 +25,8 @@ namespace Hfs.Server.Core.FileHandling
         /// </summary>
         public override void Close()
         {
+            this.Flush();
+
             try
             {
                 this.mOnComplete.Invoke(this);
@@ -34,6 +35,7 @@ namespace Hfs.Server.Core.FileHandling
             {
                 base.Close();
             }
+
         }
     }
 }

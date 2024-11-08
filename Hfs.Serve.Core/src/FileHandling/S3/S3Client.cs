@@ -14,7 +14,7 @@ using System.Net;
 
 namespace Hfs.Server.Core.FileHandling
 {
-    public class S3Client: IDisposable
+    public class S3Client : IDisposable
     {
         private string currentDir = @"/";
         private string bucketName;
@@ -35,7 +35,7 @@ namespace Hfs.Server.Core.FileHandling
 
 
         /* Construct Object */
-        public S3Client(string url, string accessKey, string secretKey, string bucketName, string currentDir = null) 
+        public S3Client(string url, string accessKey, string secretKey, string bucketName, string currentDir = null)
         {
             this.Client = new MinioClient()
                                     .WithEndpoint(url)
@@ -65,17 +65,31 @@ namespace Hfs.Server.Core.FileHandling
         /* Download File */
         public async Task Download(string remoteFile, string localFile)
         {
-            var args = new GetObjectArgs().WithBucket(this.bucketName).WithObject(remoteFile).WithFile(localFile);
-            await this.Client.GetObjectAsync(args);
+            try
+            {
+                var args = new GetObjectArgs().WithBucket(this.bucketName).WithObject(remoteFile).WithFile(localFile);
+                await this.Client.GetObjectAsync(args);
+            }
+            catch (ObjectNotFoundException)
+            {
+                throw new HfsException(EStatusCode.FileNotFound, $"Il file {remoteFile} non esiste");
+            }
         }
 
         public async Task DownloadStream(string remoteFile, Stream stream)
         {
-            var args = new GetObjectArgs().WithBucket(this.bucketName).WithObject(remoteFile).WithCallbackStream(s =>
+            try
             {
-                s.CopyToAsync(stream);
-            });
-            await this.Client.GetObjectAsync(args);
+                var args = new GetObjectArgs().WithBucket(this.bucketName).WithObject(remoteFile).WithCallbackStream(s =>
+                {
+                    s.CopyToAsync(stream);
+                });
+                await this.Client.GetObjectAsync(args);
+            }
+            catch (ObjectNotFoundException)
+            {
+                throw new HfsException(EStatusCode.FileNotFound, $"Il file {remoteFile} non esiste");
+            }
         }
 
         public async Task UploadStream(string remoteFile, Stream stream)

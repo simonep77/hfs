@@ -188,7 +188,8 @@ namespace Hfs.Server.Core.Common
         private static void internalInit()
         {
             //Avvia job di scrittura console log
-            JobManager.AddJob(() => FlushLog(), s => s.ToRunEvery(5).Seconds());
+            JobManager.AddJob(() =>
+            FlushLog(), s => s.ToRunEvery(5).Seconds());
 
             //Scrive log base
             WriteLog("");
@@ -203,11 +204,12 @@ namespace Hfs.Server.Core.Common
                 HfsData.Vfs = new VfsHandler(HfsData.VfsFilePath);
                 HfsData.Stats = new HfsStatsCollectorEX();
                 HfsData.TempDirUserFiles = System.IO.Path.Combine(HfsData.TempDir, @"users");
-                HfsData.TempDirRemoteFiles = System.IO.Path.Combine(HfsData.TempDir, @"system\remote");
-                HfsData.TempDirSharedFiles = System.IO.Path.Combine(HfsData.TempDir, @"system\shared");
+                HfsData.TempDirRemoteFiles = System.IO.Path.Combine(HfsData.TempDir, @"system", @"remote");
+                HfsData.TempDirSharedFiles = System.IO.Path.Combine(HfsData.TempDir, @"system", @"shared");
 
                 //Crea cartelle
                 System.IO.Directory.CreateDirectory(HfsData.TempDir);
+                System.IO.Directory.CreateDirectory(HfsData.TempDirUserFiles);
                 System.IO.Directory.CreateDirectory(HfsData.TempDirRemoteFiles);
                 System.IO.Directory.CreateDirectory(HfsData.TempDirSharedFiles);
 
@@ -219,7 +221,9 @@ namespace Hfs.Server.Core.Common
 
                     //Pulisce
                     DateTime dtExpired = DateTime.Today.AddDays(1).AddSeconds(-1).AddDays(-HfsData.TempFilesKeepDays);
-                    Utility.CleanDirectory(HfsData.TempDir, @"*", dtExpired, true);
+                    Utility.CleanDirectory(HfsData.TempDirUserFiles, @"*", dtExpired, true, 0);
+                    Utility.CleanDirectory(HfsData.TempDirRemoteFiles, @"*", dtExpired, true, 0);
+                    Utility.CleanDirectory(HfsData.TempDirSharedFiles, @"*", dtExpired, true, 0);
 
                     //Log fine
                     HfsData.WriteLog("Fine pulizia temporanei");

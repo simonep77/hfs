@@ -11,14 +11,17 @@ namespace Hfs.Server.Core.FileHandling
     /// <summary>
     /// File handler per file su hfs remoti
     /// </summary>
-    internal class FileHandlerS3: FileHandlerBase
+    internal class FileHandlerS3 : FileHandlerBase
     {
         private S3Client mClient;
         private bool mIsOwnClient = false;
         private string mNormalizedPath;
+        private bool mCacheOnLocal = true;
+        private string mNormalizedCachedPath;
+
 
         public FileHandlerS3(HfsResponseVfs resp)
-            :base(resp)
+            : base(resp)
         {
             var cli = new S3Client(resp.Path.Params[Const.S3_File_Handling.PATH_PARAM_ENDPOINT],
                 resp.Path.Params[Const.S3_File_Handling.PATH_PARAM_ACCESS_KEY],
@@ -32,7 +35,7 @@ namespace Hfs.Server.Core.FileHandling
         }
 
         public FileHandlerS3(HfsResponseVfs resp, S3Client cli)
-            :base(resp)
+            : base(resp)
         {
             this.initClient(resp, cli);
         }
@@ -43,6 +46,9 @@ namespace Hfs.Server.Core.FileHandling
 
             //Imposta path normalizzato
             this.mNormalizedPath = string.Concat(this.mClient.CurrenDir, resp.VirtualPath.Replace(resp.Path.Virtual, "", StringComparison.InvariantCultureIgnoreCase)).Trim(Const.URI_SEPARATOR);
+            //Se richesto il caching allora prepara il path
+            if (this.mCacheOnLocal)
+                this.mNormalizedCachedPath = Utility.HfsCombine(HfsData.TempDirRemoteFiles, resp.VirtualPath);
         }
 
         public override string FullName
@@ -67,8 +73,20 @@ namespace Hfs.Server.Core.FileHandling
 
         public override void Delete()
         {
-            if (this.Exist())
-                AsyncHelper.RunSync(() => this.mClient.Delete(this.mNormalizedPath));
+            //Eventualmente elimina copia cache
+            try
+            {
+                if (this.mCacheOnLocal && File.Exists(this.mNormalizedCachedPath))
+                    File.Delete(this.mNormalizedCachedPath);
+            }
+            finally
+            {
+                if (this.Exist())
+                    AsyncHelper.RunSync(() => this.mClient.Delete(this.mNormalizedPath));
+            }
+            
+
+
         }
 
         public override void SetAttribute(FileAttributes attr)
@@ -105,35 +123,88 @@ namespace Hfs.Server.Core.FileHandling
         {
             string sTempFile = this.createTempFileName();
             AsyncHelper.RunSync(() => this.mClient.Download(this.mNormalizedPath, sTempFile));
-            try 
-	        {	        
+            try
+            {
                 Utility.SendByMail(mailTo, mailFrom, mailSubj, mailBody, sTempFile);
-	        }
-	        finally
-	        {
+            }
+            finally
+            {
                 File.Delete(sTempFile);
-	        }
+            }
         }
 
 
         public override Stream OpenRead()
         {
+            //Nessun caching
+            if (this.mCacheOnLocal)
+            {
+                //Se esiste una versione cached la ritorna direttamente
+                var fi = new FileInfo(this.mNormalizedCachedPath);
+
+                if (fi.Exists)
+                    return fi.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
+                else
+                {
+                    //Si assicura esistenza directory
+                    Directory.CreateDirectory(fi.DirectoryName);
+                    //Scrive il file locale
+                    AsyncHelper.RunSync(() => this.mClient.Download(this.mNormalizedPath, this.mNormalizedCachedPath));
+                    fi.Refresh();
+                    //Apre stream in lettura
+                    return fi.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
+
+                }
+            }
+
             var ms = new MemoryStream();
-            try
-            {
-                AsyncHelper.RunSync(() => this.mClient.DownloadStream(this.mNormalizedPath, ms));
-            }
-            catch (ObjectNotFoundException e)
-            {
-                throw new HfsException(EStatusCode.FileNotFound, $"Il file {this.mNormalizedPath} non esiste");
-            }
+            AsyncHelper.RunSync(() => this.mClient.DownloadStream(this.mNormalizedPath, ms));
             ms.Position = 0;
             return ms;
         }
 
         public override Stream OpenWrite(bool overwrite)
         {
-            return new S3WriteStream(this.mClient, this.mNormalizedPath, overwrite);
+            if (this.mCacheOnLocal)
+            {
+                //Se esiste una versione cached la ritorna direttamente
+                Directory.CreateDirectory(Path.GetDirectoryName(this.mNormalizedCachedPath));
+
+                var fmode = overwrite ? FileMode.Create : FileMode.OpenOrCreate;
+
+                var fs = new S3WriteStreamCached(this.mNormalizedCachedPath, fmode, s =>
+                {
+                    s.Position = 0;
+                    AsyncHelper.RunSync(() => this.mClient.UploadStream(this.mNormalizedPath, s));
+                });
+
+                if (!overwrite)
+                {
+                    //Non esisteva verifica esistenza in remoto ed eventualmente la scarica
+                    if (fs.Length == 0 && this.Exist())
+                        AsyncHelper.RunSync(() => this.mClient.DownloadStream(this.mNormalizedPath, fs));
+
+                    fs.Seek(0, SeekOrigin.End);
+                }
+
+                return fs;
+            }
+
+            //Crea stream
+            var ms = new S3WriteStream(s =>
+            {
+                s.Position = 0;
+                AsyncHelper.RunSync(() => this.mClient.UploadStream(this.mNormalizedPath, s));
+            });
+
+            //Se append ed il file in remoto esiste lo scarica
+            if (!overwrite && this.Exist())
+            {
+                AsyncHelper.RunSync(() => this.mClient.DownloadStream(this.mNormalizedPath, ms));
+                ms.Seek(0, SeekOrigin.End);
+            }
+
+            return ms;
         }
 
         public override void Dispose()
