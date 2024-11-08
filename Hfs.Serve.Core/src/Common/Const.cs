@@ -117,6 +117,7 @@ namespace Hfs.Server.Core.Common
             public const string PATH_PARAM_SECRET_KEY = @"SECRET_KEY";
             public const string PATH_PARAM_BUCKET_NAME = @"BUCKET_NAME";
             public const string PATH_PARAM_CURRDIR = @"CURRDIR";
+            public const string PATH_PARAM_CACHING = @"CACHING";
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Hfs.Server.Core.FileHandling
                 resp.Path.Params[Const.S3_File_Handling.PATH_PARAM_SECRET_KEY],
                 resp.Path.Params[Const.S3_File_Handling.PATH_PARAM_BUCKET_NAME],
                 resp.Path.Params[Const.S3_File_Handling.PATH_PARAM_CURRDIR]);
-
+            this.mCacheOnLocal = Convert.ToBoolean(resp.Path.Params[Const.S3_File_Handling.PATH_PARAM_CACHING] ?? "false");
             this.mIsOwnClient = true;
             this.initClient(resp, cli);
 
