@@ -49,7 +49,7 @@ namespace Hfs.Server.Core.FileHandling
 
             //Imposta path normalizzato
             this.mNormalizedPath = string.Concat(Const.URI_SEPARATOR,
-                Utility.NormalizeVirtualPath(string.Concat(this.mCurrentDir, resp.VirtualPath.Replace(resp.Path.Virtual, ""))).TrimStart(Const.URI_SEPARATOR));
+                string.Concat(this.mCurrentDir, resp.VirtualPath.Replace(resp.Path.Virtual, "")).MakePathRemote().TrimStart(Const.URI_SEPARATOR));
 
             if (this.mIsOwnClient)
             {

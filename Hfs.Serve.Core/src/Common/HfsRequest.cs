@@ -88,10 +88,10 @@ namespace Hfs.Server.Core.Common
                         this.Pass = value;
                         break;
                     case Const.QS_VPATH:
-                        this.VPath = Utility.NormalizeVirtualPath(value);
+                        this.VPath = value.MakePathRemote();
                         break;
                     case Const.QS_VPATH_DEST:
-                        this.VPathDest = Utility.NormalizeVirtualPath(value);
+                        this.VPathDest = value.MakePathRemote();
                         break;
                     case Const.QS_VPATH_PATTERN:
                         this.Pattern = Utility.GetValue(value, @"*");

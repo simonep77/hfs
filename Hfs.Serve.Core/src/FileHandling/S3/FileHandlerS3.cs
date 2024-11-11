@@ -48,7 +48,7 @@ namespace Hfs.Server.Core.FileHandling
             this.mNormalizedPath = string.Concat(this.mClient.CurrenDir, resp.VirtualPath.Replace(resp.Path.Virtual, "", StringComparison.InvariantCultureIgnoreCase)).Trim(Const.URI_SEPARATOR);
             //Se richesto il caching allora prepara il path
             if (this.mCacheOnLocal)
-                this.mNormalizedCachedPath = Utility.HfsCombine(HfsData.TempDirRemoteFiles, resp.VirtualPath);
+                this.mNormalizedCachedPath = Utility.HfsCombine(HfsData.TempDirRemoteFiles, resp.VirtualPath).MakePathLocal();
         }
 
         public override string FullName
@@ -183,8 +183,6 @@ namespace Hfs.Server.Core.FileHandling
                     //Non esisteva verifica esistenza in remoto ed eventualmente la scarica
                     if (fs.Length == 0 && this.Exist())
                         AsyncHelper.RunSync(() => this.mClient.DownloadStream(this.mNormalizedPath, fs));
-
-                    fs.Seek(0, SeekOrigin.End);
                 }
 
                 return fs;

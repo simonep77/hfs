@@ -35,7 +35,7 @@ namespace Hfs.Server.Core.FileHandling
 
             //Imposta path normalizzato
             this.mNormalizedPath = string.Concat(Const.URI_SEPARATOR,
-                Utility.NormalizeVirtualPath(string.Concat(this.mCurrentDir, Const.URI_SEPARATOR, this.mVfsResp.VirtualPath.Replace(this.mVfsResp.Path.Virtual, ""))).TrimStart(Const.URI_SEPARATOR));
+                string.Concat(this.mCurrentDir, Const.URI_SEPARATOR, this.mVfsResp.VirtualPath.Replace(this.mVfsResp.Path.Virtual, "")).MakePathRemote().TrimStart(Const.URI_SEPARATOR));
 
             //Si collega
             //this.mClient.BulkListing = true;

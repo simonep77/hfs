@@ -15,15 +15,10 @@ namespace Hfs.Server.Core.Common
     {
         private const string S_DATE_FMT = @"dd/MM/yyyy HH:mm:ss";
         private const string S_TAG_SENT = @"TotalBytesSent";
-        private const string S_TAG_RECV = @"TotalBytesReceived";
-        private const string S_TAG_START = @"DateStartStats";
-        private const string S_TAG_UPD = @"DateLastUpdate";
 
-        private DateTime mDtStartStats = DateTime.Now;
         private Dictionary<string, StatItem> mStats;
         private long mBytesReceived = 0L;
         private long mBytesSent = 0L;
-        private long mChanges = 0L;
 
         /// <summary>
         /// Classe interna per la gestione delle statistiche
@@ -57,7 +52,6 @@ namespace Hfs.Server.Core.Common
             Interlocked.Add(ref this.mBytesReceived, cmd.BytesReceived);
             Interlocked.Add(ref this.mBytesSent, cmd.BytesSent);
             Interlocked.Increment(ref this.mStats[cmd.ActionKey].Value);
-            Interlocked.Increment(ref this.mChanges);
         }
 
 
@@ -74,7 +68,6 @@ namespace Hfs.Server.Core.Common
 
             Interlocked.Exchange(ref this.mBytesReceived, 0L);
             Interlocked.Exchange(ref this.mBytesSent, 0L);
-            Interlocked.Exchange(ref this.mChanges, 0L);
 
 
         }
@@ -86,21 +79,14 @@ namespace Hfs.Server.Core.Common
         /// <returns></returns>
         public string GetXmlStats()
         {
-            System.Text.StringBuilder sb = new System.Text.StringBuilder(1000);
-            sb.Append("<stats>");
-
-            foreach (var pair in this.mStats)
+            return System.Text.Json.JsonSerializer.Serialize(new
             {
-                sb.Append($"<item><name>{pair.Value.Action}</name><value>{Interlocked.Read(ref pair.Value.Value)}</value></item>");
-            }
-            sb.Append($"<item><name>TotalBytesReceived</name><value>{Interlocked.Read(ref this.mBytesReceived)}</value></item>");
-            sb.Append($"<item><name>TotalBytesSent</name><value>{Interlocked.Read(ref this.mBytesSent)}</value></item>");
-            sb.Append($"<item><name>DateStart</name><value>{this.mDtStartStats:dd/MM/yyyy HH:mm:ss}</value></item>");
+                Commands = this.mStats.Values.Select(x => new { x.Action, x.Value}),
+                TotBytesReceived = this.mBytesReceived,
+                TotBytesSent = this.mBytesSent,
+            });
 
-
-            sb.Append("</stats>");
-
-            return sb.ToString();
+            
         }
 
 

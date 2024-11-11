@@ -122,7 +122,7 @@ namespace Hfs.Server.Core.FileHandling
             for (int i = 0; i < files.Count; i++)
             {
                 HfsResponseVfs resp = this.mVfsResp.Clone();
-                resp.VirtualPath = string.Concat(resp.VirtualPath, Utility.NormalizeVirtualPath(files[i].SelectSingleNode("name").InnerText.Remove(0, this.mFullName.Length + 1)));
+                resp.VirtualPath = string.Concat(resp.VirtualPath, files[i].SelectSingleNode("name").InnerText.Remove(0, this.mFullName.Length + 1)).MakePathRemote();
                 resp.PhysicalPath = resp.VirtualPath;
 
                 ret[i] = this.GetDirHandler(files[i].SelectSingleNode("name").InnerText.Remove(0, this.mFullName.Length + 1));

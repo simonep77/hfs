@@ -41,11 +41,21 @@ namespace Hfs.Server.Core.Common
         /// <summary>
         /// Rimpiazza backslash con slash (notazione uri)
         /// </summary>
-        /// <param name="vpath"></param>
+        /// <param name="path"></param>
         /// <returns></returns>
-        public static string NormalizeVirtualPath(string vpath)
+        public static string MakePathRemote(this string path)
         {
-            return vpath.Replace(System.IO.Path.DirectorySeparatorChar, Const.URI_SEPARATOR).TrimEnd(Const.URI_SEPARATOR).Replace(@"//", Const.URI_SEPARATOR.ToString());
+            return path.Replace(System.IO.Path.DirectorySeparatorChar, Const.URI_SEPARATOR).TrimEnd(Const.URI_SEPARATOR).Replace(@"//", Const.URI_SEPARATOR.ToString());
+        }
+
+        /// <summary>
+        /// Dato un path normalizza i separatori al file system locale
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string MakePathLocal(this string path)
+        {
+            return path.Replace(Const.URI_SEPARATOR, System.IO.Path.DirectorySeparatorChar).Replace($"{System.IO.Path.DirectorySeparatorChar}{System.IO.Path.DirectorySeparatorChar}", System.IO.Path.DirectorySeparatorChar.ToString());
         }
 
         /// <summary>

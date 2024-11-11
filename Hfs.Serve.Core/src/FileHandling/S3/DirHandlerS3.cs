@@ -27,7 +27,7 @@ namespace Hfs.Server.Core.FileHandling
 
             //Imposta path normalizzato
 
-            this.mNormalizedPath = Utility.NormalizeVirtualPath(string.Concat(this.mClient.CurrenDir, this.mVfsResp.VirtualPath.Replace(this.mVfsResp.Path.Virtual, "", StringComparison.InvariantCultureIgnoreCase))).Trim(Const.URI_SEPARATOR);
+            this.mNormalizedPath = string.Concat(this.mClient.CurrenDir, this.mVfsResp.VirtualPath.Replace(this.mVfsResp.Path.Virtual, "", StringComparison.InvariantCultureIgnoreCase)).MakePathRemote().Trim(Const.URI_SEPARATOR);
             if (!string.IsNullOrWhiteSpace(this.mNormalizedPath))
                 this.mNormalizedPath = this.mNormalizedPath + Const.URI_SEPARATOR;
         }

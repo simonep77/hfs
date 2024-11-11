@@ -79,7 +79,7 @@ namespace Hfs.Server.Core.FileHandling
         public override IFileHandler GetFileHandler(string name)
         {
             HfsResponseVfs resp = this.mVfsResp.Clone();
-            resp.VirtualPath = Utility.HfsCombine(resp.VirtualPath, Utility.NormalizeVirtualPath(name));
+            resp.VirtualPath = Utility.HfsCombine(resp.VirtualPath, name.MakePathRemote());
             resp.PhysicalPath = Path.Combine(this.mDirInfo.FullName, name.TrimStart(Path.DirectorySeparatorChar));
             var temp = new FileHandlerLocal(resp);
 
@@ -90,7 +90,7 @@ namespace Hfs.Server.Core.FileHandling
         public override IDirHandler GetDirHandler(string name)
         {
             HfsResponseVfs resp = this.mVfsResp.Clone();
-            resp.VirtualPath = Utility.HfsCombine(resp.VirtualPath, Utility.NormalizeVirtualPath(name));
+            resp.VirtualPath = Utility.HfsCombine(resp.VirtualPath, name.MakePathRemote());
             resp.PhysicalPath = Path.Combine(this.mDirInfo.FullName, name);
             return new DirHandlerLocal(resp);
         }
