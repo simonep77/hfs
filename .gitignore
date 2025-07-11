@@ -11,3 +11,4 @@ packages
 /Hfs.Server/App_Data
 /Hfs.Server/Hfs.Server.csproj.user
 /Hfs.Serve.Core/data/log
+/Hfs.Serve.Core/data/temp
