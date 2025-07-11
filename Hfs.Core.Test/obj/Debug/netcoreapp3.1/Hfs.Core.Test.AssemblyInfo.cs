@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hfs.Core.Test")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7e9f65784c69ec4b785d4d1984a462d3a78a7d6d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6218d2cfad26cae9f69cfb45d5c7e643971cbbbf")]
 [assembly: System.Reflection.AssemblyProductAttribute("Hfs.Core.Test")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Hfs.Core.Test")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

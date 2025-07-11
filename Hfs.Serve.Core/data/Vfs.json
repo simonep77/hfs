@@ -105,19 +105,19 @@
       "parameters": [
         {
           "key": "ENDPOINT",
-          "value": "xxxxxx.xxx.xxx.xxx"
+          "value": "941f4fc10405500cca3c7265790ef46b.r2.cloudflarestorage.com"
         },
         {
           "key": "ACCESS_KEY",
-          "value": "xxxxx"
+          "value": "2576aa1fd1ad5d2666430ab0ca5e1fc1"
         },
         {
           "key": "SECRET_KEY",
-          "value": "xxxxx"
+          "value": "f46abb79d1cbac1c3ba3b75ccb49ab1b96e349e66815dcae9c0ee1d8bf319147"
         },
         {
           "key": "BUCKET_NAME",
-          "value": "xxxx"
+          "value": "mybucket"
         },
         {
           "key": "CURRDIR",

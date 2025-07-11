@@ -13,7 +13,7 @@ namespace Hfs.Server.HfsCore.Commands
 
         async protected override Task CommandExecute()
         {
-            await this.WriteResponseText(HfsData.Stats.GetXmlStats());
+            await this.WriteResponseText(HfsData.Stats.GetJsonStats());
         }
     }
 }

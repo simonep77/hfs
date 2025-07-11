@@ -77,7 +77,7 @@ namespace Hfs.Server.Core.Common
         /// Ritorna stringa con statistiche
         /// </summary>
         /// <returns></returns>
-        public string GetXmlStats()
+        public string GetJsonStats()
         {
             return System.Text.Json.JsonSerializer.Serialize(new
             {
