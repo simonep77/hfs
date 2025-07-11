@@ -25,6 +25,10 @@ app.Map("/hfs", async (HttpContext context) =>
 {
     await context.HandleHfsRequest();
 });
+app.Map("/", async (HttpContext context) =>
+{
+    await context.HandleHfsRequest();
+});
 
 //Imposta routine di shutdown
 app.Lifetime.ApplicationStopping.Register(() =>

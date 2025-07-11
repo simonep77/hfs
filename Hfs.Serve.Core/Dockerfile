@@ -5,6 +5,7 @@ WORKDIR /app
 EXPOSE 8080
 
 RUN mkdir /app/data
+COPY ["Hfs.Serve.Core/data/vfs.json", "/app/data/vfs.json"]
 
 #Volume per configurazione esterna
 VOLUME /app/data 
@@ -20,7 +21,7 @@ RUN dotnet publish "./Hfs.Serve.Core.csproj" -c Release -o /app/publish /p:UseAp
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 RUN chmod -R 1666 /app/data
 USER $APP_UID
 ENTRYPOINT ["dotnet", "Hfs.Serve.Core.dll"]
