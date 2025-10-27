@@ -3,3 +3,6 @@ build_property.RootNamespace = Hfs.Core.Test
 build_property.ProjectDir = C:\Users\simone.pelaia\source\repos\simonep77\hfs\Hfs.Core.Test\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 

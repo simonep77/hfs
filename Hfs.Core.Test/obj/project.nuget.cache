@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zEU2BDyskOc=",
+  "dgSpecHash": "gYSqVn+FbzQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\simone.pelaia\\source\\repos\\simonep77\\hfs\\Hfs.Core.Test\\Hfs.Core.Test.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\simone.pelaia\\.nuget\\packages\\hfs.client\\2.0.11\\hfs.client.2.0.11.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

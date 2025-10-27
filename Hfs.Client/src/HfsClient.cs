@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Net;
-using System.Text;
-using System.IO;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
 using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using System.Net.Http;
 using System.Xml;
 
 namespace Hfs.Client
@@ -392,45 +393,38 @@ namespace Hfs.Client
 
             //Si sposta all'inizio
             stream.Seek(0, SeekOrigin.Begin);
-
+            //Crea un buffer di lettura
             byte[] buffer = new byte[Math.Min(stream.Length, FS.MAX_SINGLE_FILE_SIZE)];
-            if (stream.Length <= FS.MAX_SINGLE_FILE_SIZE)
+            //Determina se deve usare trasferimento a blocchi con file di appoggio
+            var bConAppoggio = stream.Length > FS.MAX_SINGLE_FILE_SIZE;
+            //Imposta nome file di scrittura
+            var writeVpath = bConAppoggio ? string.Concat(FS.VPATH_TEMP, "/", Environment.MachineName, "_", Guid.NewGuid().ToString(), Path.GetExtension(vpath)) : vpath;
+            int iRead = 0;
+
+            //Se richiesto appoggio crea il file
+            if (bConAppoggio)
+                this.FileTouch(writeVpath);
+
+            //Loop scrittura
+            while ((iRead = stream.Read(buffer, 0, buffer.Length)) > 0)
             {
-                //Legge su buffer
-                stream.Read(buffer, 0, buffer.Length);
-                //Scrive buffer
-                this.mParams.Add(FS.PARAM_ACTION, FS.ACTION_WRITE);
-                this.mParams.Add(FS.PARAM_VPATH, vpath);
-                this.sendRequest(this.mParams, buffer, 0, buffer.Length);
+                //Appende blocco al file temporaneo
+                this.mParams.Add(FS.PARAM_ACTION, bConAppoggio ? FS.ACTION_APPEND : FS.ACTION_WRITE);
+                this.mParams.Add(FS.PARAM_VPATH, writeVpath);
+                this.sendRequest(this.mParams, buffer, 0, iRead);
             }
-            else
+
+            //Annulla puntatore
+            buffer = null;
+
+            if (bConAppoggio)
             {
-                //Esegue invio a blocchi
-                string sTempName = string.Concat(FS.VPATH_TEMP, "/", Environment.MachineName, "_", Guid.NewGuid().ToString(), Path.GetExtension(vpath));
-                int iDataLen = Convert.ToInt32(stream.Length);
-                int iTotRead = 0;
-                int iRead = 0;
-                //Crea temporaneo
-                this.FileTouch(sTempName);
-
-                while (iDataLen > iTotRead)
-                {
-                    //Legge file
-                    iRead = stream.Read(buffer, 0, Math.Min(iDataLen, FS.MAX_SINGLE_FILE_SIZE));
-                    iTotRead += iRead;
-                    //Appende blocco al file temporaneo
-                    this.mParams.Add(FS.PARAM_ACTION, FS.ACTION_APPEND);
-                    this.mParams.Add(FS.PARAM_VPATH, sTempName);
-                    this.sendRequest(this.mParams, buffer, 0, iRead);
-                }
-
-                //Annulla puntatore
-                buffer = null;
                 //Cancella eventuale file gia' presente
                 this.FileDelete(vpath);
                 //Sposta temporaneo su file finale
-                this.FileMove(sTempName, vpath);
+                this.FileMove(writeVpath, vpath);
             }
+                     
 
         }
 
